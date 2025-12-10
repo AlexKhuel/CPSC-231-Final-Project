@@ -1,9 +1,6 @@
 package backend;
 
-public class Pawn {
-    public boolean isWhite;
-    public int row;
-    public int col;
+public class Pawn extends Piece{
     public boolean hasMoved;
 
     public Pawn(boolean isWhite, int row, int col){
