@@ -2,6 +2,7 @@ class Board{
 
     Piece[][] board = new Piece[8][8];
 
+    int enPassantRow;
     int enPassantCol;
     boolean whiteTurn;
     boolean whiteShortCastle;
@@ -9,14 +10,63 @@ class Board{
     boolean blackShortCastle;
     boolean blackLongCastle;
 
-    public void move(int startRow, int startCol, int endRow, int endCol){
+    public boolean move(int startRow, int startCol, int endRow, int endCol){
 
     }
-    private void movePassant(int startRow, int startCol, int endRow, int endCol){
+    private boolean movePassant(int startRow, int startCol, int endRow, int endCol){
 
     }
-    private void castle(boolean isKingSide){
+    private boolean castle(String castle){
+        if(castle.equals("0-0") || castle.equals("O-O")){
+            if(whiteTurn){
+                if(whiteShortCastle){
+                    if(board[i][j] != null && board[i][j].type == 6){
+                        if(board[i][j].canMove(board, 0, 6)){
+                            board[0][6] = new King(false, 0, 6);
+                            board[0][5] = new Rook(false, 0, 5);
+                            return true;
+                        }
+                    }
+                }
+            }
+            else{
+                if(blackShortCastle){
+                    if(board[i][j] != null && board[i][j].type == 6){
+                        if(board[i][j].canMove(board, 7, 6)){
+                            board[7][6] = new King(false, 7, 6);
+                            board[7][5] = new Rook(false, 7, 5);
+                            return true;
 
+                        }
+                    }
+                }
+            }
+        }
+        else(castle.equals("0-0-0") || castle.equals("O-O-O")){
+            if(whiteTurn){
+                if(whiteLongCastle){
+                    if(board[i][j] != null && board[i][j].type == 6){
+                        if(board[i][j].canMove(board, 0, 2)){
+                            board[0][2] = new King(true, 0, 2);
+                            board[0][3] = new Rook(true, 0, 3);
+                            return true;
+                        }
+                    }
+                }
+            }
+            else{
+                if(blackShortCastle){
+                    if(board[i][j] != null && board[i][j].type == 6){
+                        if(board[i][j].canMove(board, 7, 2)){
+                            board[7][2] = new King(false, 7, 2);
+                            board[7][3] = new Rook(false, 7, 3);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
     public boolean isCheckmate(){
         int kingRow = -1;
