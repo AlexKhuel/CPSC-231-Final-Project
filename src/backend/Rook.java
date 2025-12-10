@@ -7,7 +7,7 @@
  */
 class Rook extends Piece {
 
-    static const int type = 4;
+    static final int type = 4;
 
     /**
      * Constructor for the Rook object.
@@ -15,7 +15,7 @@ class Rook extends Piece {
      * @param c - the piece's column position.
      * @param color - the piece's color (black or white).
      */
-    public Rook(int r, int c, boolean color) {
+    public Rook(boolean color, int r, int c) {
         row = r;
         col = c;
         isWhite = color;

@@ -6,7 +6,7 @@
  * @see Board.java
  */
 class Bishop extends Piece {
-    static const int type = 3;
+    static final int type = 3;
 
     /**
      * Constructor for the Bishop object.

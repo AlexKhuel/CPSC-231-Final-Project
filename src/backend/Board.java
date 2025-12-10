@@ -21,7 +21,7 @@ class Board{
             if(whiteTurn){
                 if(whiteShortCastle){
                     if(board[i][j] != null && board[i][j].type == 6){
-                        if(board[i][j].canMove(board, 0, 6)){
+                        if(board[i][j].canMove(this, 0, 6)){
                             board[0][6] = new King(false, 0, 6);
                             board[0][5] = new Rook(false, 0, 5);
                             return true;
@@ -32,7 +32,7 @@ class Board{
             else{
                 if(blackShortCastle){
                     if(board[i][j] != null && board[i][j].type == 6){
-                        if(board[i][j].canMove(board, 7, 6)){
+                        if(board[i][j].canMove(this, 7, 6)){
                             board[7][6] = new King(false, 7, 6);
                             board[7][5] = new Rook(false, 7, 5);
                             return true;
@@ -46,7 +46,7 @@ class Board{
             if(whiteTurn){
                 if(whiteLongCastle){
                     if(board[i][j] != null && board[i][j].type == 6){
-                        if(board[i][j].canMove(board, 0, 2)){
+                        if(board[i][j].canMove(this, 0, 2)){
                             board[0][2] = new King(true, 0, 2);
                             board[0][3] = new Rook(true, 0, 3);
                             return true;
@@ -57,7 +57,7 @@ class Board{
             else{
                 if(blackShortCastle){
                     if(board[i][j] != null && board[i][j].type == 6){
-                        if(board[i][j].canMove(board, 7, 2)){
+                        if(board[i][j].canMove(this, 7, 2)){
                             board[7][2] = new King(false, 7, 2);
                             board[7][3] = new Rook(false, 7, 3);
                             return true;

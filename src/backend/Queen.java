@@ -7,7 +7,7 @@
  */
 class Queen extends Piece {
 
-    static const int type = 5;
+    static final int type = 5;
 
     /**
      * Constructor for the Queen object.

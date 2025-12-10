@@ -7,7 +7,7 @@
  */
 class Knight extends Piece {
 
-    static const int type = 2;
+    static final int type = 2;
 
     /**
      * Constructor for the Knight object.
