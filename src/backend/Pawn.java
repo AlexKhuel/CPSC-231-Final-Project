@@ -2,6 +2,7 @@ package backend;
 
 public class Pawn extends Piece{
     public boolean hasMoved;
+    static const int type = 1;
 
     public Pawn(boolean isWhite, int row, int col){
         this.isWhite = isWhite;

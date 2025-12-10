@@ -7,6 +7,8 @@
  */
 class Knight extends Piece {
 
+    static const int type = 2;
+
     /**
      * Constructor for the Knight object.
      * @param r - the piece's row position.

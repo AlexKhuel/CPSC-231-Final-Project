@@ -7,6 +7,8 @@
  */
 class Queen extends Piece {
 
+    static const int type = 5;
+
     /**
      * Constructor for the Queen object.
      * @param r - the piece's row position.
