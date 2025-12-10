@@ -13,16 +13,16 @@ public class Pawn extends Piece{
     public boolean canMove(Board gameBoard, int endRow, int endCol){
         if (!hasMoved && ((endRow == row+2) && (col == endCol)) && (gameBoard.board[row+1][endCol] == null)){
             hasMoved = true;
-            return true;
+            return !(isInCheck(gameBoard.board, endRow, endCol));
         } else if (((endRow == row+1) && (col == endCol)) && (gameBoard.board[endRow][endCol] == null)) {
             hasMoved = true;
-            return true;
+            return !(isInCheck(gameBoard.board, endRow, endCol));
         } else if (((endRow == row+1) && ((endCol == col-1) || (endCol == col+1)) && (gameBoard.board[endRow][endCol].isWhite != this.isWhite))){
             hasMoved = true;
-            return true;
+            return !(isInCheck(gameBoard.board, endRow, endCol));
         } else if (((gameBoard.enPassantCol == endCol) && ((endRow == row-1) || (endRow == row+1))) && ((gameBoard.board[endRow+1][endCol].isWhite != this.isWhite) || (gameBoard.board[endRow-1][endCol].isWhite != this.isWhite))){
             hasMoved = true;
-            return true;
+            return !(isInCheck(gameBoard.board, endRow, endCol));
         }
         return false;
     }
