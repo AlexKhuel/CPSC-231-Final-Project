@@ -10,7 +10,7 @@ class Board{
     boolean blackShortCastle;
     boolean blackLongCastle;
 
-    public boolean move(int startRow, int startCol, int endRow, int endCol){
+    public boolean move(String userInput){
 
     }
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol){
