@@ -26,7 +26,7 @@ class Bishop extends Piece {
      * @param endCol - the column of the move location that is being checked.
      */
     @Override
-    public boolean canMove(Board board, int endRow, int endCol) {
+    public boolean canMove(Board gameBoard, int endRow, int endCol) {
 
         if (endRow == row && endCol == col) {
             return false;
@@ -56,7 +56,7 @@ class Bishop extends Piece {
             }
 
             if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                return !(isInCheck(gameBoard.board, endRow, endCol));
+                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
             } else {
                 return false;
             }
