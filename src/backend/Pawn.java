@@ -8,6 +8,7 @@ package backend;
 public class Pawn extends Piece{
     /** Tracks whether this pawn has moved from its starting position */
     public boolean hasMoved;
+    static const int type = 1;
 
     /**
      * Constructs a new Pawn with the specified color and position.

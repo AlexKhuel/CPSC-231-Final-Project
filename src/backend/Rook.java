@@ -7,6 +7,8 @@
  */
 class Rook extends Piece {
 
+    static const int type = 4;
+
     /**
      * Constructor for the Rook object.
      * @param r - the piece's row position.
