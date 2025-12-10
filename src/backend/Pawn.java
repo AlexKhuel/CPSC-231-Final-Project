@@ -20,78 +20,59 @@ public class Pawn extends Piece{
     public Pawn(boolean isWhite, int row, int col){
         this.isWhite = isWhite;
         this.row = row;
-        this.col = col;2
+        this.col = col;
         hasMoved = false;
     }
 
-    /**
-     * Determines whether this pawn can move to the specified position.
-     * 
-     * Validates the following move types:
-     * <ul>
-     *   <li>Two squares forward on the first move (if path is clear)</li>
-     *   <li>One square forward (if destination is empty)</li>
-     *   <li>Diagonal capture (if opponent piece occupies the diagonal square)</li>
-     *   <li>En passant capture (if conditions are met)</li>
-     * </ul>
-     * 
-     * After a valid move, marks this pawn as having moved. Also verifies that the
-     * move does not leave the king in check.
-     * 
-     * @param gameBoard the current state of the chess board
-     * @param endRow the target row for the move (0-7)
-     * @param endCol the target column for the move (0-7)
-     * @return true if the move is legal and does not result in check, false otherwise
-     */
     public boolean canMove(Board gameBoard, int endRow, int endCol){
-        if (this.isWhite){
-            if (!hasMoved && ((endRow == row+2) && (col == endCol)) && (gameBoard.board[row+1][endCol] == null)){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if (((endRow == row+1) && (col == endCol)) && (gameBoard.board[endRow][endCol] == null)) {
-                
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if (((endRow == row+1) && ((endCol == col-1) || (endCol == col+1)) && (gameBoard.board[endRow][endCol].isWhite != this.isWhite))){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if ((gameBoard.enPassantCol == endCol) && (gameBoard.enPassantRow == endRow) && ()){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            }
-            return false;
-        } else {
-            if (!hasMoved && ((endRow == row-2) && (col == endCol)) && (gameBoard.board[row-1][endCol] == null)){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if (((endRow == row-1) && (col == endCol)) && (gameBoard.board[endRow][endCol] == null)) {
-                
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if (((endRow == row-1) && ((endCol == col-1) || (endCol == col+1)) && (gameBoard.board[endRow][endCol].isWhite != this.isWhite))){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            } else if (((gameBoard.enPassantCol == endCol) && ((gameBoard.enPassantRow == endRow) || (endRow == row+1))) && ((gameBoard.board[endRow+1][endCol].isWhite != this.isWhite) || (gameBoard.board[endRow-1][endCol].isWhite != this.isWhite))){
-                if (!(isInCheck(gameBoard.board, row, col, endRow, endCol))){
-                    hasMoved = true;
-                }
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
-            }
+        int direction = isWhite ? 1 : -1;
+
+        if (!isValid(gameBoard, endCol, endRow, direction)){
             return false;
         }
+
+        if (isInCheck(gameBoard, endRow, endCol)){
+            return false; 
+        }
+
+        hasMoved = true;
+        return true;
+    }
+
+    private boolean isValid(Board gameBoard, int endCol, int endRow, int direction){
+
+        Piece target = getTarget(gameBoard.board, endCol, endRow);
+
+        //move forward one square
+        if (endCol == this.col && endRow == (this.row+direction) && target == null){
+            return true;
+        }
+
+        //move forward two squares 
+        if (!hasMoved && endCol == this.col && endRow == (this.row+(direction*2))){
+            Piece target2 = getTarget(gameBoard.board, endCol, row+direction);
+            return target == null && target2 == null;
+        }
+
+        // Capture diagonally
+        if (Math.abs(endCol - this.col) == 1 && endRow == this.row + direction){
+            return target != null && target.isWhite != this.isWhite;
+        }
+
+        //En Passant
+        if (gameBoard.enPassantCol == endCol && gameBoard.enPassantRow == endRow){
+            return Math.abs(endCol - col) == 1 && endRow == row+direction;
+        }
+
+        return false;
+
+
+    }
+
+    private Piece getTarget(Piece[][] board, int endCol, int endRow){
+        if (endCol >= 8 || endCol < 0 || endRow >= 8 || endRow < 0){
+            return null;
+        }
+        return board[endRow][endCol];
     }
 }
