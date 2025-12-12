@@ -3,14 +3,13 @@ package backend;
 /**
  * This class is used to represent a King piece in a game of chess.
  * @author Jerry Salas
- * @version 1.7
+ * @version 1.8
  * @see Piece.java
  * @see Board.java
  */
 class King extends Piece {
 
     static final int type = 6;
-    public boolean hasMoved;
 
     /**
      * Constructor for the King object.
@@ -22,7 +21,6 @@ class King extends Piece {
         row = r;
         col = c;
         isWhite = color;
-        hasMoved = false;
     }
 
     /**
@@ -48,77 +46,159 @@ class King extends Piece {
                 return false;
             }
 
-            // Check if the move would put the king in check
-            return !isInCheck(gameBoard, row, col, endRow, endCol);
+            // Simulate the move to check if it puts king in check
+            Piece capturedPiece = gameBoard.board[endRow][endCol];
+            gameBoard.board[endRow][endCol] = this;
+            gameBoard.board[row][col] = null;
+            
+            // Update king's position temporarily
+            int oldRow = row;
+            int oldCol = col;
+            row = endRow;
+            col = endCol;
+            
+            // Check if king would be in check at new position
+            boolean wouldBeInCheck = isInCheck(gameBoard, endRow, endCol, endRow, endCol);
+            
+            // Restore king's position
+            row = oldRow;
+            col = oldCol;
+            gameBoard.board[oldRow][oldCol] = this;
+            gameBoard.board[endRow][endCol] = capturedPiece;
+            
+            return !wouldBeInCheck;
         } else {
             return false;
         }
     }
 
     /**
-     * Checks if the king would be in check after a move.
+     * Checks if the king is in check at the specified position.
+     * This checks if any opponent piece can attack the king.
      * @param gameBoard - the Board object where the game is taking place.
-     * @param startRow - the starting row position.
-     * @param startCol - the starting column position.
-     * @param endRow - the ending row position.
-     * @param endCol - the ending column position.
-     * @return true if the king would be in check, false otherwise.
+     * @param startRow - not used, kept for interface compatibility.
+     * @param startCol - not used, kept for interface compatibility.
+     * @param kingRow - the row where the king is located.
+     * @param kingCol - the column where the king is located.
+     * @return true if the king is in check, false otherwise.
      */
-    public boolean isInCheck(Board gameBoard, int startRow, int startCol, int endRow, int endCol) {
-        // Temporarily make the move
-        Piece capturedPiece = gameBoard.board[endRow][endCol];
-        gameBoard.board[endRow][endCol] = this;
-        gameBoard.board[startRow][startCol] = null;
-
-        // Check if any opponent piece can attack the king's new position
-        boolean inCheck = false;
+    public boolean isInCheck(Board gameBoard, int startRow, int startCol, int kingRow, int kingCol) {
+        // Check if any opponent piece can attack the king at (kingRow, kingCol)
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece piece = gameBoard.board[i][j];
                 if (piece != null && piece.isWhite != isWhite) {
-                    if (piece.canMove(gameBoard, endRow, endCol)) {
-                        inCheck = true;
-                        break;
+                    // Check if this opponent piece can attack the king's position
+                    // We need to check basic movement without recursively checking for check
+                    if (canPieceAttack(piece, gameBoard, i, j, kingRow, kingCol)) {
+                        return true;
                     }
                 }
             }
-            if (inCheck) break;
         }
-
-        // Undo the temporary move
-        gameBoard.board[startRow][startCol] = this;
-        gameBoard.board[endRow][endCol] = capturedPiece;
-
-        return inCheck;
+        return false;
+    }
+    
+    /**
+     * Helper method to check if a piece can attack a target square.
+     * This checks basic movement rules without checking for check (prevents infinite recursion).
+     */
+    private boolean canPieceAttack(Piece piece, Board gameBoard, int fromRow, int fromCol, int toRow, int toCol) {
+        // Basic bounds checking
+        if (toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
+            return false;
+        }
+        
+        // Can't attack own piece
+        if (gameBoard.board[toRow][toCol] != null && 
+            gameBoard.board[toRow][toCol].isWhite == piece.isWhite) {
+            return false;
+        }
+        
+        // Check based on piece type
+        if (piece instanceof Pawn) {
+            // Pawns attack diagonally one square
+            int direction = piece.isWhite ? 1 : -1;
+            return (toRow == fromRow + direction && Math.abs(toCol - fromCol) == 1);
+        } else if (piece instanceof Knight) {
+            // Knight moves in L-shape
+            int rowDiff = Math.abs(toRow - fromRow);
+            int colDiff = Math.abs(toCol - fromCol);
+            return (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+        } else if (piece instanceof Bishop) {
+            // Bishop moves diagonally
+            if (Math.abs(toRow - fromRow) != Math.abs(toCol - fromCol)) {
+                return false;
+            }
+            return isPathClear(gameBoard, fromRow, fromCol, toRow, toCol);
+        } else if (piece instanceof Rook) {
+            // Rook moves horizontally or vertically
+            if (fromRow != toRow && fromCol != toCol) {
+                return false;
+            }
+            return isPathClear(gameBoard, fromRow, fromCol, toRow, toCol);
+        } else if (piece instanceof Queen) {
+            // Queen moves like bishop or rook
+            boolean isDiagonal = Math.abs(toRow - fromRow) == Math.abs(toCol - fromCol);
+            boolean isStraight = (fromRow == toRow || fromCol == toCol);
+            if (!isDiagonal && !isStraight) {
+                return false;
+            }
+            return isPathClear(gameBoard, fromRow, fromCol, toRow, toCol);
+        } else if (piece instanceof King) {
+            // King attacks one square in any direction
+            return Math.abs(toRow - fromRow) <= 1 && Math.abs(toCol - fromCol) <= 1;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Helper method to check if the path between two squares is clear.
+     */
+    private boolean isPathClear(Board gameBoard, int fromRow, int fromCol, int toRow, int toCol) {
+        int rowDir = (toRow - fromRow) == 0 ? 0 : (toRow - fromRow) / Math.abs(toRow - fromRow);
+        int colDir = (toCol - fromCol) == 0 ? 0 : (toCol - fromCol) / Math.abs(toCol - fromCol);
+        
+        int currentRow = fromRow + rowDir;
+        int currentCol = fromCol + colDir;
+        
+        while (currentRow != toRow || currentCol != toCol) {
+            if (gameBoard.board[currentRow][currentCol] != null) {
+                return false;
+            }
+            currentRow += rowDir;
+            currentCol += colDir;
+        }
+        
+        return true;
     }
 
     /**
      * Checks if the king can castle to the specified side.
+     * Uses the Board's castling rights flags instead of checking piece movement.
      * @param gameBoard - the Board object where the game is taking place.
      * @param isKingSide - true for kingside castle, false for queenside castle.
      * @return true if castling is legal, false otherwise.
      */
     public boolean canCastle(Board gameBoard, boolean isKingSide) {
-        if (hasMoved) {
-            return false;
-        }
-
-        int rookCol = isKingSide ? 7 : 0;
-        Piece rook = gameBoard.board[row][rookCol];
-
-        // Check if rook exists and hasn't moved
-        if (rook == null || rook.type != 4) {
-            return false;
+        // Check castling rights from Board
+        boolean hasCastlingRights;
+        if (isWhite) {
+            hasCastlingRights = isKingSide ? gameBoard.whiteShortCastle : gameBoard.whiteLongCastle;
+        } else {
+            hasCastlingRights = isKingSide ? gameBoard.blackShortCastle : gameBoard.blackLongCastle;
         }
         
-        // Cast to Rook to check hasMoved
-        if (rook instanceof Rook && ((Rook) rook).hasMoved) {
+        if (!hasCastlingRights) {
             return false;
         }
 
         // Check if squares between king and rook are empty
+        int rookCol = isKingSide ? 7 : 0;
         int start = Math.min(col, rookCol);
         int end = Math.max(col, rookCol);
+        
         for (int i = start + 1; i < end; i++) {
             if (gameBoard.board[row][i] != null) {
                 return false;
@@ -130,7 +210,7 @@ class King extends Piece {
             return false;
         }
 
-        // Check if king passes through or ends in check
+        // Check if king passes through check or ends in check
         int direction = isKingSide ? 1 : -1;
         for (int i = 1; i <= 2; i++) {
             if (isInCheck(gameBoard, row, col, row, col + (direction * i))) {
