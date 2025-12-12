@@ -2,8 +2,8 @@ package backend;
 
 /**
  * This class is used to represent a King piece in a game of chess.
- * @author Jake Puebla
- * @version 1.0
+ * @author Jerry Salas
+ * @version 1.7
  * @see Piece.java
  * @see Board.java
  */
