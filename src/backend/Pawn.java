@@ -23,7 +23,13 @@ public class Pawn extends Piece{
         this.col = col;
         hasMoved = false;
     }
-
+     /**
+     * Checks the move that is trying to be made by the user 
+     * 
+     * @param gameBoard the gameBoard object that is intialized in main allowing access to the board and passant variables
+     * @param endRow the ending row position on the board (0-7)
+     * @param endCol the ending column position on the board (0-7)
+     */
     public boolean canMove(Board gameBoard, int endRow, int endCol){
         int direction = isWhite ? 1 : -1;
 
