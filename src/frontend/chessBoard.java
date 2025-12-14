@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class chessBoard extends JPanel {   
 
-    private ChessGame game;
+    private Board game;
     private int selectedRow = -1;
     private int selectedCol = -1;
     private int dragX = 0;
@@ -13,7 +13,7 @@ public class chessBoard extends JPanel {
     private int squareSize = 0;
 
     public chessBoard() {
-        game = new ChessGame();
+        game = new Board();
         
         addMouseListener(new MouseAdapter() {
             @Override
@@ -41,7 +41,7 @@ public class chessBoard extends JPanel {
         int row = e.getY() / squareSize;
 
         // Check if there's a piece at this location
-        Piece piece = game.getPieceAt(row, col);
+        Piece piece = game.board[row][col];
         if (piece != null) {
             selectedRow = row;
             selectedCol = col;
@@ -66,7 +66,7 @@ public class chessBoard extends JPanel {
             int targetRow = e.getY() / squareSize;
 
             // Let ChessGame handle all validation (bounds, move legality, etc.)
-            if (game.movePiece(selectedRow, selectedCol, targetRow, targetCol)) {
+            if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
                 System.out.println("Valid move!");
             } else {
                 System.out.println("Invalid move - piece cannot move there");
@@ -107,7 +107,7 @@ public class chessBoard extends JPanel {
         }
 
         // Get board state from game logic
-        Piece[][] boardState = game.getBoardState();
+        Piece[][] boardState = game.board;
         
         g2d.setFont(new Font("Arial", Font.BOLD, squareSize / 2));
         FontMetrics fm = g2d.getFontMetrics();
