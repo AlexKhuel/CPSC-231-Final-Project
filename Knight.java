@@ -1,5 +1,7 @@
+
 /**
  * This class is used to represent a Knight piece in a game of chess.
+ *
  * @author Jake Puebla
  * @version 1.0
  * @see Piece.java
@@ -7,22 +9,27 @@
  */
 class Knight extends Piece {
 
-    static final int type = 2;
-
     /**
      * Constructor for the Knight object.
+     *
      * @param r - the piece's row position.
      * @param c - the piece's column position.
      * @param color - the piece's color (black or white).
      */
-    public Knight(int r, int c, boolean color) {
-        row = r;
-        col = c;
-        isWhite = color;
+    public Knight(int row, int col, boolean isWhite) {
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+    }
+
+    @Override
+    public Piece copy() {
+        return new Knight(this.row, this.col, this.isWhite);
     }
 
     /**
      * Overriden function. Determines whether a move is valid.
+     *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
@@ -36,33 +43,45 @@ class Knight extends Piece {
             return false;
         }
 
-        if (Math.abs(endRow - row) == 1) {
-            if (Math.abs(endCol - col) == 2) {
-                if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                    return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
+        switch (Math.abs(endRow - row)) {
+            case 1 -> {
+                if (Math.abs(endCol - col) == 2) {
+                    if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+                        return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
-            } else {
-                return false;
             }
+            case 2 -> {
+                if (Math.abs(endCol - col) == 1) {
+                    if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+                        return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
+                    } else {
+                        return false;
+                    }
 
-        } else if (Math.abs(endRow - row) == 2) {
-            if (Math.abs(endCol - col) == 1) {
-                if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                    return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
                 } else {
                     return false;
                 }
-
-            } else {
+            }
+            default -> {
                 return false;
             }
-
-        } else {
-            return false;
         }
 
+    }
+
+    @Override
+    public int getRow() {
+        return row;
+    }
+
+    @Override
+    public int getCol() {
+        return col;
     }
 
 }

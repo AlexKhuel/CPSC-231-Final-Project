@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,14 +29,11 @@ public class BorderLayoutExample {
 
         // 3. Add components to the frame using BorderLayout constraints
         // Components in North and South are stretched horizontally.
-     
         frame.add(board);
-        
-        // The center component gets all available extra space and stretches both ways.
 
+        // The center component gets all available extra space and stretches both ways.
         // Optional: Set preferred sizes for visibility/demonstration purposes
         board.setPreferredSize(new Dimension(500, 500));
-
 
         // 4. Size the frame to fit the preferred size of all components
         frame.pack();
