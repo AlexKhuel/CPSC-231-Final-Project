@@ -1,5 +1,7 @@
+
 /**
  * This class is used to represent a Rook piece in a game of chess.
+ *
  * @author Jake Puebla
  * @version 1.0
  * @see Piece.java
@@ -7,29 +9,34 @@
  */
 class Rook extends Piece {
 
-    static final int type = 4;
-
     /**
      * Constructor for the Rook object.
+     *
      * @param r - the piece's row position.
      * @param c - the piece's column position.
      * @param color - the piece's color (black or white).
      */
-    public Rook(boolean color, int r, int c) {
-        row = r;
-        col = c;
-        isWhite = color;
+    public Rook(int row, int col, boolean isWhite) {
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+    }
+
+    @Override
+    public Piece copy() {
+        return new Rook(this.row, this.col, this.isWhite);
     }
 
     /**
      * Overriden function. Determines whether a move is valid.
+     *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
      */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
-        
+
         if (endRow == row && endCol == col) {
             return false;
         } else if (endCol < 0 || endRow < 0 || endCol > 7 || endRow > 7) {
@@ -45,12 +52,14 @@ class Rook extends Piece {
             int dist;
             int direction;
             if (isVertical) {
+                dist = Math.abs(endRow - row);
                 if (endRow < row) {
                     direction = -1;
                 } else {
                     direction = 1;
                 }
             } else {
+                dist = Math.abs(endCol - col);
                 if (endCol < col) {
                     direction = -1;
                 } else {
@@ -70,8 +79,8 @@ class Rook extends Piece {
                 }
             }
 
-            if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
+            if (gameBoard.board[endRow][endCol] == null || !(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+                return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
             } else {
                 return false;
             }
@@ -80,7 +89,16 @@ class Rook extends Piece {
             return false;
         }
 
+    }
 
+    @Override
+    public int getRow() {
+        return row;
+    }
+
+    @Override
+    public int getCol() {
+        return col;
     }
 
 }

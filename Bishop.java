@@ -1,27 +1,35 @@
+
 /**
  * This class is used to represent a Bishop piece in a game of chess.
+ *
  * @author Jake Puebla
  * @version 1.0
  * @see Piece.java
  * @see Board.java
  */
 class Bishop extends Piece {
-    static final int type = 3;
 
     /**
      * Constructor for the Bishop object.
+     *
      * @param r - the piece's row position.
      * @param c - the piece's column position.
      * @param color - the piece's color (black or white).
      */
-    public Bishop(int r, int c, boolean color) {
-        row = r;
-        col = c;
-        isWhite = color;
+    public Bishop(int row, int col, boolean isWhite) {
+        this.row = row;
+        this.col = col;
+        this.isWhite = isWhite;
+    }
+
+    @Override
+    public Piece copy() {
+        return new Bishop(this.row, this.col, this.isWhite);
     }
 
     /**
      * Overriden function. Determines whether a move is valid.
+     *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
@@ -57,7 +65,7 @@ class Bishop extends Piece {
             }
 
             if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                return !(isInCheck(gameBoard.board, row, col, endRow, endCol));
+                return !(gameBoard.getKing(this.isWhite).isInCheck(gameBoard, endRow, endCol));
             } else {
                 return false;
             }
@@ -65,6 +73,16 @@ class Bishop extends Piece {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int getRow() {
+        return row;
+    }
+
+    @Override
+    public int getCol() {
+        return col;
     }
 
 }
