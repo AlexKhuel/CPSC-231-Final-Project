@@ -31,13 +31,15 @@ public class Pawn extends Piece{
      * @param endCol the ending column position on the board (0-7)
      */
     public boolean canMove(Board gameBoard, int endRow, int endCol){
-        int direction = isWhite ? 1 : -1;
+        int direction = isWhite ? -1 : 1;
 
         if (!isValid(gameBoard, endCol, endRow, direction)){
             return false;
         }
 
-        if (isInCheck(gameBoard, endRow, endCol)){
+        King king = gameBoard.findKing(isWhite);
+
+        if (king.isInCheck(gameBoard, endRow, endCol)){
             return false; 
         }
 

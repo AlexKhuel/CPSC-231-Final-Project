@@ -10,6 +10,23 @@ class Board{
     boolean blackShortCastle;
     boolean blackLongCastle;
 
+    public King findKing(boolean isWhite){
+        int r = isWhite ? 7 : 0;
+        int c = isWhite ? 7 : 0;
+        int direction = isWhite ? -1 : 1;
+
+        for (int row = r; isWhite ? row >= 0 : row < 8; row += direction ){
+            for (int col = c; isWhite ? col >= 0 : col < 8; col += direction ){
+                Piece piece = board[row][col];
+                if (piece instanceof King && piece.isWhite == isWhite){
+                    return (King) piece;
+                }
+            }
+        }
+
+        return null; //somethings wrong
+    }
+
     public boolean move(String userInput){
 
     }
