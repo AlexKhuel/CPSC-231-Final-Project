@@ -1,17 +1,15 @@
 
-import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import javax.swing.*;
 
 public class BorderLayoutExample {
 
     public static void main(String[] args) {
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
+        SwingUtilities.invokeLater(() -> {
+            createAndShowGUI();
         });
     }
 
