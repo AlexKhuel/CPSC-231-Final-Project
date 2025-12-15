@@ -87,32 +87,25 @@ class Board {
     }
 
     public boolean move(int startRow, int startCol, int endRow, int endCol) {
-        System.out.println("Border conditions");
         if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
             return false;
         }
-        System.out.println("Null catch");
         if (board[startRow][startCol] == null) {
             return false;
         }
-        System.out.println("White turn");
         if (board[startRow][startCol].isWhite() != whiteTurn) {
             return false;
         }
 
-        System.out.println("isCheckmate");
         if (isCheckmate()) {
             return false;
         }
 
         Piece currPiece = board[startRow][startCol];
 
-        System.out.println("Specific rook moving");
         //Specific rook moving so we can update castling rights
         if (currPiece instanceof Rook currRook && currRook.canMove(this, endRow, endCol)) {
             if (whiteShortCastle && startRow == 0 && startCol == 7) {
-
-                
                 whiteShortCastle = false;
             } else if (whiteLongCastle && startRow == 0 && startCol == 0) {
                 whiteLongCastle = false;
@@ -127,36 +120,28 @@ class Board {
 
             return true;
         }
-        
-        
-        
 
-        System.out.println("If current piece is king");
         //If it is a king, check if the move is attempting castling
         if (currPiece instanceof King currKing) {
 
-            System.out.println("Part 1.0");
             if (Math.abs(startCol - endCol) > 1) {
                 return castle(endCol);
             }
-            System.out.println("Part 2.0");
 
             if (currKing.canMove(this, endRow, endCol)) {
                 board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
                 board[startRow][startCol] = null;
                 return true;
             }
-            System.out.println("Part 2.0");
 
             return false;
         }
 
-        System.out.println("Pawn checking");
         if (currPiece instanceof Pawn && startCol != endCol) {
             int dir = endCol - startCol;
 
             if (board[startRow][startCol + dir] instanceof Pawn && board[endRow][endCol] == null) {
-                System.out.println("Calling movePassant");
+
                 movePassant(startRow, startCol, endRow, endCol);
                 return true;
             }
@@ -165,18 +150,12 @@ class Board {
             
             
 
-        System.out.println("currPiece.canMove call");
-        if (currPiece instanceof Pawn currPawn && currPawn.canMove(this, endRow, endCol)) {
-            int something = currPawn.isWhite ? 0 : 6;
-            int direction = currPawn.isWhite ? -1 : 0;
-            if (currPawn.getRow()+direction == something){
-                board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-                return true;
-            }else {
-                
+        if (currPiece instanceof Pawn currPawn) {
+
+            if (currPawn.canMove(this, endRow, endCol)) {
+
                 if (Math.abs(currPawn.getRow() - endRow) == 2) {
-                    
+
                     enPassantIsWhite = currPawn.isWhite;
                     enPassantCol = endCol;
                     enPassantRow = currPawn.isWhite ? endRow + 1 : endRow - 1;
@@ -187,7 +166,6 @@ class Board {
             }
         }
 
-        System.out.println("currPiece.canMove call");
         System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
 
         if (currPiece.canMove(this, endRow, endCol)) {
@@ -195,7 +173,6 @@ class Board {
             return true;
         }
 
-        System.out.println("Catching anything that isn't right rn");
         //Catches anything 
         return false;
     }
@@ -227,11 +204,11 @@ class Board {
 
         Piece currPiece = board[startRow][startCol];
         if (currPiece.canMove(this, endRow, endCol)) {
-            System.out.println("canMove fs");
+
             uncheckedMove(currPiece, startRow, startCol, endRow, endCol);
             board[endRow + direction][endCol] = null;
         } else {
-            System.out.println("Can't move");
+
             return false;
         }
 
@@ -240,7 +217,6 @@ class Board {
 
     private boolean castle(int endCol) {
 
-        System.out.println("Wow! " + endCol);
         String castle;
 
         if (endCol == 2) {
@@ -248,53 +224,12 @@ class Board {
         } else {
             castle = "O-O";
         }
-        System.out.println("Castle: " + castle + " - whiteTurn: " + whiteTurn + " - whiteShortCastle: " + whiteShortCastle);
+
         if (castle.equals("O-O")) {
             if (whiteTurn && whiteShortCastle) {
-                System.out.println("Part 1");
-                if (board[0][5] != null || board[0][6] != null) {
-                    return false;
-                }
-                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
-                King tempKingSecond = new King(0, 5, board[0][4].isWhite);
-                System.out.println("Part 2");
 
-                if ((tempKingFirst.canMove(this, 0, 5) && tempKingSecond.canMove(this, 0, 6)) == false) {
-                    return false;
-                }
-                System.out.println("Part 3");
-
-                board[0][6] = new King(0, 6, true);
-                board[0][5] = new Rook(0, 5, true);
-                board[0][4] = null;
-                board[0][7] = null;
-                whiteShortCastle = false;
-                whiteLongCastle = false;
-                return true;
-            }
-
-            if (whiteTurn && whiteLongCastle) {
-                if (board[0][1] != null || board[0][2] != null || board[0][3] != null) {
-                    return false;
-                }
-                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
-                King tempKingSecond = new King(0, 3, board[0][4].isWhite);
-
-                if ((tempKingFirst.canMove(this, 0, 3) && tempKingSecond.canMove(this, 0, 2)) == false) {
-                    return false;
-                }
-
-                board[0][2] = new King(0, 2, true);
-                board[0][3] = new Rook(0, 3, true);
-                board[0][4] = null;
-                board[0][0] = null;
-                whiteShortCastle = false;
-                whiteLongCastle = false;
-                return true;
-            }
-
-            if (!whiteTurn && blackShortCastle) {
                 if (board[7][5] != null || board[7][6] != null) {
+
                     return false;
                 }
                 King tempKingFirst = new King(7, 4, board[7][4].isWhite);
@@ -304,16 +239,16 @@ class Board {
                     return false;
                 }
 
-                board[7][6] = new King(7, 6, false);
-                board[7][5] = new Rook(7, 5, false);
+                board[7][6] = new King(7, 6, true);
+                board[7][5] = new Rook(7, 5, true);
                 board[7][4] = null;
                 board[7][7] = null;
-                blackShortCastle = false;
-                blackLongCastle = false;
+                whiteShortCastle = false;
+                whiteLongCastle = false;
                 return true;
             }
 
-            if (!whiteTurn && blackLongCastle) {
+            if (whiteTurn && whiteLongCastle) {
                 if (board[7][1] != null || board[7][2] != null || board[7][3] != null) {
                     return false;
                 }
@@ -324,10 +259,50 @@ class Board {
                     return false;
                 }
 
-                board[7][2] = new King(7, 2, false);
-                board[7][3] = new Rook(7, 3, false);
+                board[7][2] = new King(7, 2, true);
+                board[7][3] = new Rook(7, 3, true);
                 board[7][4] = null;
                 board[7][0] = null;
+                whiteShortCastle = false;
+                whiteLongCastle = false;
+                return true;
+            }
+
+            if (!whiteTurn && blackShortCastle) {
+                if (board[0][5] != null || board[0][6] != null) {
+                    return false;
+                }
+                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
+                King tempKingSecond = new King(0, 5, board[0][4].isWhite);
+
+                if ((tempKingFirst.canMove(this, 0, 5) && tempKingSecond.canMove(this, 0, 6)) == false) {
+                    return false;
+                }
+
+                board[0][6] = new King(0, 6, false);
+                board[0][5] = new Rook(0, 5, false);
+                board[0][4] = null;
+                board[0][7] = null;
+                blackShortCastle = false;
+                blackLongCastle = false;
+                return true;
+            }
+
+            if (!whiteTurn && blackLongCastle) {
+                if (board[0][1] != null || board[0][2] != null || board[0][3] != null) {
+                    return false;
+                }
+                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
+                King tempKingSecond = new King(0, 3, board[0][4].isWhite);
+
+                if ((tempKingFirst.canMove(this, 0, 3) && tempKingSecond.canMove(this, 0, 2)) == false) {
+                    return false;
+                }
+
+                board[0][2] = new King(0, 2, false);
+                board[0][3] = new Rook(0, 3, false);
+                board[0][4] = null;
+                board[0][0] = null;
                 blackShortCastle = false;
                 blackLongCastle = false;
                 return true;
@@ -337,7 +312,7 @@ class Board {
     }
 
     public boolean isCheckmate() {
-        System.out.println("============================================");
+
         King currKing = getKing(whiteTurn);
 
         for (int i = 0; i < 8; i++) {
@@ -369,7 +344,7 @@ class Board {
                             board[row][col] = oldPiece;
 
                             if (!wouldCheck) {
-                                System.out.println("============================================");
+
                                 return false;
                             }
                         }
@@ -377,7 +352,7 @@ class Board {
                 }
             }
         }
-        System.out.println("============================================");
+
         return true;
 
     }
@@ -389,7 +364,7 @@ class Board {
             enPassantRow = -1;
             enPassantIsWhite = false;
         }
-        System.out.println("whiteTurn = "+whiteTurn);
+
     }
 
 }
