@@ -33,7 +33,17 @@ class Board {
     }
 
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol) {
-        return false; // Temp
+        int direction = board[startRow][startCol].isWhite ? -1 : 1;
+        
+        Piece currPiece = board[startRow][startCol];
+        if ((currPiece instanceof Pawn) && currPiece.canMove(this, endRow, endCol)){
+            board[endRow][endCol] = currPiece;
+            board[endRow+direction][endCol] = null;
+        } else {
+            return false;
+        }
+        
+        return true;
     }
 
     private boolean castle(String castle) {
