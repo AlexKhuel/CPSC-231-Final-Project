@@ -41,10 +41,10 @@ class Bishop extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
-     * 
-     * The Bishop can move any number of squares diagonally, but cannot
-     * jump over other pieces. The path must be clear and the move must
-     * not result in the player's king being in check.
+     *
+     * The Bishop can move any number of squares diagonally, but cannot jump
+     * over other pieces. The path must be clear and the move must not result in
+     * the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.

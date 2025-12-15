@@ -41,11 +41,11 @@ class Knight extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
-     * 
-     * The Knight moves in an L-shape: either 2 squares in one direction and
-     * 1 square perpendicular, or 1 square in one direction and 2 squares
-     * perpendicular. The Knight can jump over other pieces. The move must
-     * not result in the player's king being in check.
+     *
+     * The Knight moves in an L-shape: either 2 squares in one direction and 1
+     * square perpendicular, or 1 square in one direction and 2 squares
+     * perpendicular. The Knight can jump over other pieces. The move must not
+     * result in the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.

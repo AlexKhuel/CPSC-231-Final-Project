@@ -12,7 +12,7 @@ import javax.swing.*;
 
 /**
  * Main application class that creates and displays the chess game window.
- * 
+ *
  * This class sets up the GUI framework using Swing, creates the main
  * application window, and initializes the chess board panel. It uses
  * BorderLayout to manage the window layout.
@@ -20,9 +20,8 @@ import javax.swing.*;
 public class BorderLayoutExample {
 
     /**
-     * Entry point for the chess game application.
-     * Schedules the GUI creation on the Event Dispatch Thread to ensure
-     * thread safety with Swing components.
+     * Entry point for the chess game application. Schedules the GUI creation on
+     * the Event Dispatch Thread to ensure thread safety with Swing components.
      *
      * @param args command line arguments (not used)
      */
@@ -35,10 +34,9 @@ public class BorderLayoutExample {
     }
 
     /**
-     * Creates and displays the main application window.
-     * Initializes the JFrame, sets up the chess board panel, configures
-     * the window properties (size, layout, close operation), and makes
-     * the window visible.
+     * Creates and displays the main application window. Initializes the JFrame,
+     * sets up the chess board panel, configures the window properties (size,
+     * layout, close operation), and makes the window visible.
      */
     private static void createAndShowGUI() {
         // 1. Create the main application frame

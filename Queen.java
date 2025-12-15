@@ -41,10 +41,10 @@ class Queen extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
-     * 
+     *
      * The Queen can move any number of squares horizontally, vertically, or
-     * diagonally (combining the movement patterns of a Rook and Bishop).
-     * The move must not result in the player's king being in check.
+     * diagonally (combining the movement patterns of a Rook and Bishop). The
+     * move must not result in the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.

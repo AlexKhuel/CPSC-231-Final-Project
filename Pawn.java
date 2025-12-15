@@ -82,7 +82,8 @@ class Pawn extends Piece {
      * @param endCol the target column position
      * @param endRow the target row position
      * @param direction the direction of movement (-1 for white, 1 for black)
-     * @return true if the target position represents a valid pawn move, false otherwise
+     * @return true if the target position represents a valid pawn move, false
+     * otherwise
      */
     private boolean isValid(Board gameBoard, int endCol, int endRow, int direction) {
 
@@ -119,8 +120,8 @@ class Pawn extends Piece {
      * @param board the 2D array representing the chess board
      * @param endCol the column position to check
      * @param endRow the row position to check
-     * @return the Piece at the specified position, or null if the position
-     *         is out of bounds or empty
+     * @return the Piece at the specified position, or null if the position is
+     * out of bounds or empty
      */
     private Piece getTarget(Piece[][] board, int endCol, int endRow) {
         if (endCol >= 8 || endCol < 0 || endRow >= 8 || endRow < 0) {

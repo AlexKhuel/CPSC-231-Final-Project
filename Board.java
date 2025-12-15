@@ -8,7 +8,7 @@ Date Completed: December 14, 2025
 
 /**
  * Represents a chess board and manages the game state and rules.
- * 
+ *
  * This class handles piece placement, move validation, turn management,
  * castling rights, en passant captures, and checkmate detection.
  */
@@ -23,37 +23,37 @@ class Board {
      * The row position where en passant capture is currently available
      */
     int enPassantRow;
-    
+
     /**
      * The column position where en passant capture is currently available
      */
     int enPassantCol;
-    
+
     /**
      * The color of the pawn that can be captured via en passant
      */
     boolean enPassantIsWhite;
-    
+
     /**
      * Tracks whose turn it is (true for white, false for black)
      */
     boolean whiteTurn;
-    
+
     /**
      * Indicates if white can still castle kingside (short castle)
      */
     boolean whiteShortCastle;
-    
+
     /**
      * Indicates if white can still castle queenside (long castle)
      */
     boolean whiteLongCastle;
-    
+
     /**
      * Indicates if black can still castle kingside (short castle)
      */
     boolean blackShortCastle;
-    
+
     /**
      * Indicates if black can still castle queenside (long castle)
      */
@@ -61,10 +61,9 @@ class Board {
 
     /**
      * Default constructor that initializes a standard chess board with all
-     * pieces in their starting positions. Sets up both sides with pawns,
-     * rooks, knights, bishops, queens, and kings in regulation positions.
-     * Initializes game state with white to move first and all castling
-     * rights available.
+     * pieces in their starting positions. Sets up both sides with pawns, rooks,
+     * knights, bishops, queens, and kings in regulation positions. Initializes
+     * game state with white to move first and all castling rights available.
      */
     public Board() {
         board = new Piece[8][8];
@@ -105,9 +104,9 @@ class Board {
     }
 
     /**
-     * Copy constructor that creates a deep copy of another board.
-     * Copies all pieces and game state including turn, castling rights,
-     * and en passant information.
+     * Copy constructor that creates a deep copy of another board. Copies all
+     * pieces and game state including turn, castling rights, and en passant
+     * information.
      *
      * @param other the Board object to copy
      */
@@ -154,10 +153,10 @@ class Board {
     }
 
     /**
-     * Attempts to move a piece from the starting position to the ending position.
-     * Validates the move according to chess rules, including turn order, piece
-     * movement patterns, special moves (castling, en passant, pawn promotion),
-     * and ensures the move doesn't leave the king in check.
+     * Attempts to move a piece from the starting position to the ending
+     * position. Validates the move according to chess rules, including turn
+     * order, piece movement patterns, special moves (castling, en passant, pawn
+     * promotion), and ensures the move doesn't leave the king in check.
      *
      * @param startRow the starting row position (0-7)
      * @param startCol the starting column position (0-7)
@@ -259,10 +258,9 @@ class Board {
     }
 
     /**
-     * Moves a piece without performing validation checks.
-     * Used internally for hypothetical move testing and board copying.
-     * Creates a new piece at the destination and removes the piece from
-     * the starting position.
+     * Moves a piece without performing validation checks. Used internally for
+     * hypothetical move testing and board copying. Creates a new piece at the
+     * destination and removes the piece from the starting position.
      *
      * @param currPiece the piece to move
      * @param startRow the starting row position
@@ -293,8 +291,8 @@ class Board {
     }
 
     /**
-     * Executes an en passant capture move.
-     * Validates the move and removes the captured pawn from the board.
+     * Executes an en passant capture move. Validates the move and removes the
+     * captured pawn from the board.
      *
      * @param startRow the starting row of the capturing pawn
      * @param startCol the starting column of the capturing pawn
@@ -319,12 +317,13 @@ class Board {
     }
 
     /**
-     * Attempts to perform a castling move (kingside or queenside).
-     * Validates that castling is legal by checking that the squares between
-     * the king and rook are empty, the king is not in check, and the king
-     * does not pass through or land on a square that is under attack.
+     * Attempts to perform a castling move (kingside or queenside). Validates
+     * that castling is legal by checking that the squares between the king and
+     * rook are empty, the king is not in check, and the king does not pass
+     * through or land on a square that is under attack.
      *
-     * @param endCol the target column for the king (2 for queenside, 6 for kingside)
+     * @param endCol the target column for the king (2 for queenside, 6 for
+     * kingside)
      * @return true if castling was successfully executed, false otherwise
      */
     private boolean castle(int endCol) {
@@ -428,9 +427,9 @@ class Board {
     }
 
     /**
-     * Determines if the current player is in checkmate.
-     * Tests all possible moves for all pieces belonging to the current player
-     * to see if any move would result in the king not being in check.
+     * Determines if the current player is in checkmate. Tests all possible
+     * moves for all pieces belonging to the current player to see if any move
+     * would result in the king not being in check.
      *
      * @return true if the current player is in checkmate, false otherwise
      */
@@ -475,9 +474,8 @@ class Board {
     }
 
     /**
-     * Switches the current turn to the other player.
-     * Also clears en passant availability if it was set by the player
-     * whose turn just ended.
+     * Switches the current turn to the other player. Also clears en passant
+     * availability if it was set by the player whose turn just ended.
      */
     public void changeTurn() {
         whiteTurn = !whiteTurn;
