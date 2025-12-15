@@ -33,7 +33,7 @@ class Pawn extends Piece {
 
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
-        int direction = isWhite ? 1 : -1;
+        int direction = isWhite ? -1 : 1;
 
         if (!isValid(gameBoard, endCol, endRow, direction)) {
             return false;
@@ -52,11 +52,16 @@ class Pawn extends Piece {
         Piece target = getTarget(gameBoard.board, endCol, endRow);
 
         //move forward one square
+        System.out.println("endCol == this.col"+(endCol == this.col));
+        System.out.println("endRow == (this.row + direction)"+(endRow == (this.row + direction)));
+        System.out.println("target == null"+(target == null));
+        System.out.println("direction = "+direction);
         if (endCol == this.col && endRow == (this.row + direction) && target == null) {
             return true;
         }
 
         //move forward two squares 
+        System.out.println("!hasMoved"+ !hasMoved);
         if (!hasMoved && endCol == this.col && endRow == (this.row + (direction * 2))) {
             Piece target2 = getTarget(gameBoard.board, endCol, row + direction);
             return target == null && target2 == null;
