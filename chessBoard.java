@@ -191,8 +191,9 @@ public class chessBoard extends JPanel {
     if (game.isCheckmate()) {
         return game.whiteTurn ? "Black Wins!" : "White Wins!";
     }
-    // if (game.isCheck()) {
-    //     return "Check!";
+    // King currking = game.getKing(game.whiteTurn);
+    // if (currking.isInCheck(game, currking.getRow(), currking.getCol())) {
+    //      return "Check!";
     // }
     return game.whiteTurn ? "White's Turn" : "Black's Turn";
 }
