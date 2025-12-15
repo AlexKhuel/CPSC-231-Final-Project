@@ -247,4 +247,9 @@ class King extends Piece {
     public int getCol() {
         return col;
     }
+
+    @Override
+    public boolean isWhite() {
+        return isWhite;
+    }
 }

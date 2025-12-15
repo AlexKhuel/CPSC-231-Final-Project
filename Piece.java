@@ -12,4 +12,6 @@ abstract class Piece {
     public abstract int getRow();
 
     public abstract int getCol();
+
+    public abstract boolean isWhite();
 }

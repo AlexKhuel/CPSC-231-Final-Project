@@ -39,52 +39,46 @@ class Rook extends Piece {
 
         if (endRow == row && endCol == col) {
             return false;
-        } else if (endCol < 0 || endRow < 0 || endCol > 7 || endRow > 7) {
+        }
+
+        if (endCol < 0 || endRow < 0 || endCol > 7 || endRow > 7) {
             return false;
         }
 
-        if (endCol == col || endRow == row) {
-            boolean isVertical = true;
-            if (endRow == row) {
-                isVertical = false;
-            }
+        if (!(endCol == col || endRow == row)) {
+            return false;
+        }
 
-            int dist;
-            int direction;
+        boolean isVertical = endRow != row;
+
+        int dist;
+        int direction;
+
+        if (isVertical) {
+            dist = Math.abs(endRow - row);
+
+            direction = endRow < row ? -1 : 1;
+
+        } else {
+            dist = Math.abs(endCol - col);
+
+            direction = endCol < col ? -1 : 1;
+        }
+
+        for (int i = 1; i < dist; i++) {
             if (isVertical) {
-                dist = Math.abs(endRow - row);
-                if (endRow < row) {
-                    direction = -1;
-                } else {
-                    direction = 1;
+                if (!(gameBoard.board[row + (direction * i)][col] == null)) {
+                    return false;
                 }
             } else {
-                dist = Math.abs(endCol - col);
-                if (endCol < col) {
-                    direction = -1;
-                } else {
-                    direction = 1;
+                if (!(gameBoard.board[row][col + (direction * i)] == null)) {
+                    return false;
                 }
             }
+        }
 
-            for (int i = 1; i < dist; i++) {
-                if (isVertical) {
-                    if (!(gameBoard.board[row + (direction * i)][col] == null)) {
-                        return false;
-                    }
-                } else {
-                    if (!(gameBoard.board[row][col + (direction * i)] == null)) {
-                        return false;
-                    }
-                }
-            }
-
-            if (gameBoard.board[endRow][endCol] == null || !(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
-                return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
-            } else {
-                return false;
-            }
-
+        if (gameBoard.board[endRow][endCol] == null || !(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+            return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
         } else {
             return false;
         }
@@ -99,6 +93,11 @@ class Rook extends Piece {
     @Override
     public int getCol() {
         return col;
+    }
+
+    @Override
+    public boolean isWhite() {
+        return isWhite;
     }
 
 }

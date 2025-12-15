@@ -84,4 +84,9 @@ class Knight extends Piece {
         return col;
     }
 
+    @Override
+    public boolean isWhite() {
+        return isWhite;
+    }
+
 }
