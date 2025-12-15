@@ -170,31 +170,35 @@ class Board {
         System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
 
         if (currPiece.canMove(this, endRow, endCol)) {
-            if (currPiece instanceof Pawn) {
-                board[endRow][endCol] = new Pawn(endRow, endCol, board[startRow][startCol].isWhite(), true);
-                board[startRow][startCol] = null;
-            } else if (currPiece instanceof Bishop) {
-                board[endRow][endCol] = new Bishop(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-            } else if (currPiece instanceof Knight) {
-                board[endRow][endCol] = new Knight(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-            } else if (currPiece instanceof Rook) {
-                board[endRow][endCol] = new Rook(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-            } else if (currPiece instanceof Queen) {
-                board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-            } else {
-                board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
-                board[startRow][startCol] = null;
-            }
+
             return true;
         }
 
         System.out.println("Catching anything that isn't right rn");
         //Catches anything 
         return false;
+    }
+
+    public void uncheckedMove(Piece currPiece, int startRow, int startCol, int endRow, int endCol) {
+        if (currPiece instanceof Pawn) {
+            board[endRow][endCol] = new Pawn(endRow, endCol, board[startRow][startCol].isWhite(), true);
+            board[startRow][startCol] = null;
+        } else if (currPiece instanceof Bishop) {
+            board[endRow][endCol] = new Bishop(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+        } else if (currPiece instanceof Knight) {
+            board[endRow][endCol] = new Knight(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+        } else if (currPiece instanceof Rook) {
+            board[endRow][endCol] = new Rook(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+        } else if (currPiece instanceof Queen) {
+            board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+        } else {
+            board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+        }
     }
 
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol) {
