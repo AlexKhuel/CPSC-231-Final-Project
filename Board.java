@@ -111,6 +111,8 @@ class Board {
         //Specific rook moving so we can update castling rights
         if (currPiece instanceof Rook currRook && currRook.canMove(this, endRow, endCol)) {
             if (whiteShortCastle && startRow == 0 && startCol == 7) {
+
+                System.out.println("What the helly");
                 whiteShortCastle = false;
             } else if (whiteLongCastle && startRow == 0 && startCol == 0) {
                 whiteLongCastle = false;
@@ -129,15 +131,19 @@ class Board {
         System.out.println("If current piece is king");
         //If it is a king, check if the move is attempting castling
         if (currPiece instanceof King currKing) {
+
+            System.out.println("Part 1.0");
             if (Math.abs(startCol - endCol) > 1) {
                 return castle(endCol);
             }
+            System.out.println("Part 2.0");
 
             if (currKing.canMove(this, endRow, endCol)) {
                 board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
                 board[startRow][startCol] = null;
                 return true;
             }
+            System.out.println("Part 2.0");
 
             return false;
         }
@@ -217,6 +223,8 @@ class Board {
     }
 
     private boolean castle(int endCol) {
+
+        System.out.println("Wow! " + endCol);
         String castle;
 
         if (endCol == 2) {
@@ -224,18 +232,21 @@ class Board {
         } else {
             castle = "O-O";
         }
-
+        System.out.println("Castle: " + castle + " - whiteTurn: " + whiteTurn + " - whiteShortCastle: " + whiteShortCastle);
         if (castle.equals("O-O")) {
             if (whiteTurn && whiteShortCastle) {
+                System.out.println("Part 1");
                 if (board[0][5] != null || board[0][6] != null) {
                     return false;
                 }
                 King tempKingFirst = new King(0, 4, board[0][4].isWhite);
                 King tempKingSecond = new King(0, 5, board[0][4].isWhite);
+                System.out.println("Part 2");
 
                 if ((tempKingFirst.canMove(this, 0, 5) && tempKingSecond.canMove(this, 0, 6)) == false) {
                     return false;
                 }
+                System.out.println("Part 3");
 
                 board[0][6] = new King(0, 6, true);
                 board[0][5] = new Rook(0, 5, true);
