@@ -55,8 +55,6 @@ class Board {
             for (int col = 0; col < 8; col++) {
                 if (other.board[row][col] != null) {
                     this.board[row][col] = other.board[row][col].copy();
-                } else {
-                    this.board[row][col] = null;
                 }
             }
         }
