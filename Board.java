@@ -87,7 +87,7 @@ class Board {
         Piece currPiece = board[startRow][startCol];
 
         //Specific rook moving so we can update castling rights
-        if (currPiece instanceof Rook && currPiece.canMove(this, endRow, endCol)) {
+        if (currPiece instanceof Rook currRook && currRook.canMove(this, endRow, endCol)) {
             if (whiteShortCastle && startRow == 0 && startCol == 7) {
                 whiteShortCastle = false;
             } else if (whiteLongCastle && startRow == 0 && startCol == 0) {
@@ -103,12 +103,12 @@ class Board {
         }
 
         //If it is a king, check if the move is attempting castling
-        if (currPiece instanceof King) {
+        if (currPiece instanceof King currKing) {
             if (Math.abs(startCol - endCol) > 1) {
                 return castle(endCol);
             }
 
-            if (currPiece.canMove(this, endRow, endCol)) {
+            if (currKing.canMove(this, endRow, endCol)) {
                 uncheckedMove(startRow, startCol, endRow, endCol);
                 return true;
             }
@@ -121,6 +121,14 @@ class Board {
 
             if (board[startRow][startCol + dir] instanceof Pawn && board[endRow][endCol] == null) {
                 movePassant(startRow, startCol, endRow, endCol);
+                return true;
+            }
+        }
+
+        if (currPiece instanceof Pawn currPawn) {
+            if (currPawn.canMove(this, endRow, endCol)) {
+                uncheckedMove(startRow, startCol, endRow, endCol);
+                currPawn.hasMoved = true;
                 return true;
             }
         }

@@ -77,7 +77,7 @@ class Rook extends Piece {
             }
         }
 
-        if (gameBoard.board[endRow][endCol] == null || !(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+        if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
             return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
         } else {
             return false;
