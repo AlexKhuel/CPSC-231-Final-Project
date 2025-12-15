@@ -127,7 +127,7 @@ class Board {
 
         if (currPiece instanceof Pawn currPawn) {
             if (currPawn.canMove(this, endRow, endCol)) {
-                board[endRow][endCol] = new Pawn(endRow, endCol, currPawn, true);
+                board[endRow][endCol] = new Pawn(endRow, endCol, currPawn.isWhite, true);
                 board[startRow][startCol] = null;
                 return true;
             }
