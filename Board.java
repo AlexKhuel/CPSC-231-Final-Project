@@ -1,3 +1,12 @@
+/*
+CPSC-231 Final Project
+Chess Board
+By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
+
+Date Completed: December 14, 2025
+*/
+
+
 
 class Board {
 
@@ -213,7 +222,7 @@ class Board {
     }
 
     private boolean castle(int endCol) {
-
+        System.out.println("Getting to castle");
         String castle;
 
         if (endCol == 2) {
@@ -243,28 +252,8 @@ class Board {
                 whiteShortCastle = false;
                 whiteLongCastle = false;
                 return true;
+    
             }
-
-            if (whiteTurn && whiteLongCastle) {
-                if (board[7][1] != null || board[7][2] != null || board[7][3] != null) {
-                    return false;
-                }
-                King tempKingFirst = new King(7, 4, board[7][4].isWhite);
-                King tempKingSecond = new King(7, 3, board[7][4].isWhite);
-
-                if ((tempKingFirst.canMove(this, 7, 3) && tempKingSecond.canMove(this, 7, 2)) == false) {
-                    return false;
-                }
-
-                board[7][2] = new King(7, 2, true);
-                board[7][3] = new Rook(7, 3, true);
-                board[7][4] = null;
-                board[7][0] = null;
-                whiteShortCastle = false;
-                whiteLongCastle = false;
-                return true;
-            }
-
             if (!whiteTurn && blackShortCastle) {
                 if (board[0][5] != null || board[0][6] != null) {
                     return false;
@@ -284,7 +273,31 @@ class Board {
                 blackLongCastle = false;
                 return true;
             }
+        } 
 
+            System.out.println("whiteTurn "+whiteTurn+ "whiteLongCastle "+whiteLongCastle);
+            if (whiteTurn && whiteLongCastle) {
+                if (board[7][1] != null || board[7][2] != null || board[7][3] != null) {
+                    return false;
+                }
+                King tempKingFirst = new King(7, 4, board[7][4].isWhite);
+                King tempKingSecond = new King(7, 3, board[7][4].isWhite);
+
+                if ((tempKingFirst.canMove(this, 7, 3) && tempKingSecond.canMove(this, 7, 2)) == false) {
+                    return false;
+                }
+
+                board[7][2] = new King(7, 2, true);
+                board[7][3] = new Rook(7, 3, true);
+                board[7][4] = null;
+                board[7][0] = null;
+                whiteShortCastle = false;
+                whiteLongCastle = false;
+                return true;
+            }
+            
+            
+            System.out.println("blackLongCastle "+blackLongCastle);
             if (!whiteTurn && blackLongCastle) {
                 if (board[0][1] != null || board[0][2] != null || board[0][3] != null) {
                     return false;
@@ -304,9 +317,11 @@ class Board {
                 blackLongCastle = false;
                 return true;
             }
-        }
+        
         return false;
+        
     }
+
 
     public boolean isCheckmate() {
 

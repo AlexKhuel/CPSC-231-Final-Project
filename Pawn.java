@@ -1,3 +1,12 @@
+/*
+CPSC-231 Final Project
+Chess Board
+By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
+
+Date Completed: December 14, 2025
+*/
+
+
 
 /**
  * Represents a Pawn piece in a chess game.
