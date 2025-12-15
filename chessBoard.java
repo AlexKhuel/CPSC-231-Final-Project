@@ -1,8 +1,9 @@
-import javax.swing.JPanel;
+
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.JPanel;
 
-public class chessBoard extends JPanel {   
+public class chessBoard extends JPanel {
 
     private Board game;
     private int selectedRow = -1;
@@ -14,7 +15,7 @@ public class chessBoard extends JPanel {
 
     public chessBoard() {
         game = new Board();
-        
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -67,41 +68,21 @@ public class chessBoard extends JPanel {
 
             // Let ChessGame handle all validation (bounds, move legality, etc.)
             System.out.println("Going into if statements");
-            if (game.isCheckmate()){
+            if (game.isCheckmate()) {
                 System.out.println("Is checkmate");
                 repaint();
-                
-            }else if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
+
+            } else if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
                 System.out.println("Valid move!");
                 game.changeTurn();
             } else {
                 System.out.println("Invalid move - piece cannot move there");
-                System.out.println("Move Tried: selectedRow: "+selectedRow+"; selectedCol: "+selectedCol);
-                System.out.println("             targetRow: "+targetRow+"; targetCol: "+targetCol);
-                System.out.println("Board[selectedRow][selectedCol]: "+game.board[selectedRow][selectedCol]);
+                System.out.println("Move Tried: selectedRow: " + selectedRow + "; selectedCol: " + selectedCol);
+                System.out.println("             targetRow: " + targetRow + "; targetCol: " + targetCol);
+                System.out.println("Board[selectedRow][selectedCol]: " + game.board[selectedRow][selectedCol]);
             }
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            System.out.println("");
-            
+
             // Reset dragging state
-            isDragging = false;
             selectedRow = -1;
             selectedCol = -1;
             repaint();
@@ -139,7 +120,7 @@ public class chessBoard extends JPanel {
 
         // Get board state from game logic
         Piece[][] boardState = game.board;
-        
+
         g2d.setFont(new Font("Arial", Font.BOLD, squareSize / 2));
         FontMetrics fm = g2d.getFontMetrics();
 
@@ -171,20 +152,20 @@ public class chessBoard extends JPanel {
             }
         }
 
-          if (gameOver) {
+        if (gameOver) {
             // Semi-transparent overlay
             g2d.setColor(new Color(0, 0, 0, 150));
             g2d.fillRect(0, 0, panelWidth, panelHeight);
-            
+
             // Draw winner message
             g2d.setFont(new Font("Arial", Font.BOLD, 48));
             g2d.setColor(Color.WHITE);
             fm = g2d.getFontMetrics();
-            
+
             String message = gameStatus;
             int x = (panelWidth - fm.stringWidth(message)) / 2;
             int y = (panelHeight - fm.getHeight()) / 2 + fm.getAscent();
-            
+
             g2d.drawString(message, x, y);
         }
     }
@@ -192,7 +173,7 @@ public class chessBoard extends JPanel {
     private String getPieceSymbol(Piece piece) {
         // Convert piece objects to Unicode chess symbols
         boolean isWhite = piece.isWhite(); // Adjust based on your Piece class
-        
+
         if (piece instanceof Pawn) {
             return isWhite ? "♙" : "♟";
         } else if (piece instanceof Rook) {
@@ -208,14 +189,15 @@ public class chessBoard extends JPanel {
         }
         return "?";
     }
+
     public String getGameStatus() {
-    if (game.isCheckmate()) {
-        return game.whiteTurn ? "Black Wins!" : "White Wins!";
+        if (game.isCheckmate()) {
+            return game.whiteTurn ? "Black Wins!" : "White Wins!";
+        }
+        // King currking = game.getKing(game.whiteTurn);
+        // if (currking.isInCheck(game, currking.getRow(), currking.getCol())) {
+        //      return "Check!";
+        // }
+        return game.whiteTurn ? "White's Turn" : "Black's Turn";
     }
-    // King currking = game.getKing(game.whiteTurn);
-    // if (currking.isInCheck(game, currking.getRow(), currking.getCol())) {
-    //      return "Check!";
-    // }
-    return game.whiteTurn ? "White's Turn" : "Black's Turn";
-}
 }
