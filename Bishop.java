@@ -44,9 +44,11 @@ class Bishop extends Piece {
         }
 
         if (Math.abs(endRow - row) == Math.abs(endCol - col)) {
+
             int dist = Math.abs(endRow - row);
             int rowDirection;
             int colDirection;
+
             if (endRow < row) {
                 rowDirection = -1;
             } else {
