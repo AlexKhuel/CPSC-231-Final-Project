@@ -260,6 +260,9 @@ class Board {
 
                 for (int row = 0; row < 8; row++) {
                     for (int col = 0; col < 8; col++) {
+                        if (board[i][j] == null) {
+                            continue;
+                        }
                         if (board[i][j].canMove(this, row, col)) {
                             Piece movingPiece = board[i][j];
                             Piece oldPiece = board[row][col];
