@@ -67,7 +67,10 @@ class Bishop extends Piece {
             }
 
             if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
-                return !(gameBoard.getKing(this.isWhite).isInCheck(gameBoard, endRow, endCol));
+                King currKing = gameBoard.getKing(this.isWhite);
+                Board fakeBoard = new Board(gameBoard);
+                fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                return !(currKing.isInCheck(fakeBoard));
             } else {
                 return false;
             }

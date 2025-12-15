@@ -66,7 +66,9 @@ public class chessBoard extends JPanel {
             int targetRow = e.getY() / squareSize;
 
             // Let ChessGame handle all validation (bounds, move legality, etc.)
+            System.out.println("Going into if statements");
             if (game.isCheckmate()){
+                System.out.println("Is checkmate");
                 repaint();
                 
             }else if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
@@ -78,7 +80,26 @@ public class chessBoard extends JPanel {
                 System.out.println("             targetRow: "+targetRow+"; targetCol: "+targetCol);
                 System.out.println("Board[selectedRow][selectedCol]: "+game.board[selectedRow][selectedCol]);
             }
-
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+            
             // Reset dragging state
             isDragging = false;
             selectedRow = -1;

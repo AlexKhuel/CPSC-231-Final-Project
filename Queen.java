@@ -36,13 +36,13 @@ class Queen extends Piece {
      */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
-
+        System.out.println("Queen Row "+row+" Queen Col"+col);
         if (endRow == row && endCol == col) {
             return false;
         } else if (endCol < 0 || endRow < 0 || endCol > 7 || endRow > 7) {
             return false;
         }
-
+        
         Bishop tempBishop = new Bishop(this.row, this.col, this.isWhite);
 
         Rook tempRook = new Rook(this.row, this.col, this.isWhite);

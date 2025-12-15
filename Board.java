@@ -161,8 +161,11 @@ class Board {
 
         System.out.println("currPiece.canMove call");
         if (currPiece instanceof Pawn currPawn) {
+            System.out.println("Not a valid move for some reason");
             if (currPawn.canMove(this, endRow, endCol)) {
-                if (Math.abs(currPawn.getCol() - endCol) == 2) {
+                System.out.println("Math.abs is wrong");
+                if (Math.abs(currPawn.getRow() - endRow) == 2) {
+                    System.out.println("Should be updating the right stuff now");
                     enPassantIsWhite = currPawn.isWhite;
                     enPassantCol = endCol;
                     enPassantRow = currPawn.isWhite ? endRow + 1 : endRow - 1;
@@ -209,13 +212,15 @@ class Board {
     }
 
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol) {
-        int direction = board[startRow][startCol].isWhite ? -1 : 1;
+        int direction = board[startRow][startCol].isWhite ? 1 : -1;
 
         Piece currPiece = board[startRow][startCol];
-        if ((currPiece instanceof Pawn) && currPiece.canMove(this, endRow, endCol)) {
-            board[endRow][endCol] = currPiece;
+        if (currPiece.canMove(this, endRow, endCol)) {
+            System.out.println("canMove fs");
+            uncheckedMove(currPiece, startRow, startCol, endRow, endCol);
             board[endRow + direction][endCol] = null;
         } else {
+            System.out.println("Can't move");
             return false;
         }
 
@@ -348,7 +353,7 @@ class Board {
                             board[row][col].col = col;
                             board[i][j] = null;
 
-                            boolean wouldCheck = currKing.isInCheck(this, currKing.getRow(), currKing.getCol());
+                            boolean wouldCheck = currKing.isInCheck(this);
 
                             board[i][j] = movingPiece;
                             board[row][col] = oldPiece;
@@ -374,6 +379,7 @@ class Board {
             enPassantRow = -1;
             enPassantIsWhite = false;
         }
+        System.out.println("whiteTurn = "+whiteTurn);
     }
 
 }
