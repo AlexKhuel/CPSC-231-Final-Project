@@ -46,7 +46,7 @@ class Knight extends Piece {
         switch (Math.abs(endRow - row)) {
             case 1 -> {
                 if (Math.abs(endCol - col) == 2) {
-                    if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+                    if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
                         return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
                     } else {
                         return false;
@@ -57,7 +57,7 @@ class Knight extends Piece {
             }
             case 2 -> {
                 if (Math.abs(endCol - col) == 1) {
-                    if (!(gameBoard.board[endRow][endCol].isWhite == isWhite)) {
+                    if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
                         return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
                     } else {
                         return false;
