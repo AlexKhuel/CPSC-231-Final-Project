@@ -170,7 +170,7 @@ class Board {
         System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
 
         if (currPiece.canMove(this, endRow, endCol)) {
-
+            uncheckedMove(currPiece, startRow, startCol, endRow, endCol);
             return true;
         }
 
