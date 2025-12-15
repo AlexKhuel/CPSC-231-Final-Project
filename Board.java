@@ -14,31 +14,31 @@ class Board {
     public Board() {
         board = new Piece[8][8];
 
-        board[0][0] = new Rook(0, 0, true);
-        board[0][1] = new Knight(0, 1, true);
-        board[0][2] = new Bishop(0, 2, true);
-        board[0][3] = new Queen(0, 3, true);
-        board[0][4] = new King(0, 4, true);
-        board[0][5] = new Bishop(0, 5, true);
-        board[0][6] = new Knight(0, 6, true);
-        board[0][7] = new Rook(0, 7, true);
+        board[0][0] = new Rook(0, 0, false);
+        board[0][1] = new Knight(0, 1, false);
+        board[0][2] = new Bishop(0, 2, false);
+        board[0][3] = new Queen(0, 3, false);
+        board[0][4] = new King(0, 4, false);
+        board[0][5] = new Bishop(0, 5, false);
+        board[0][6] = new Knight(0, 6, false);
+        board[0][7] = new Rook(0, 7, false);
 
         for (int col = 0; col < 8; col++) {
-            board[1][col] = new Pawn(1, col, true, false);
+            board[1][col] = new Pawn(1, col, false, false);
         }
 
         for (int col = 0; col < 8; col++) {
-            board[6][col] = new Pawn(6, col, false, false);
+            board[6][col] = new Pawn(6, col, true, false);
         }
 
-        board[7][0] = new Rook(7, 0, false);
-        board[7][1] = new Knight(7, 1, false);
-        board[7][2] = new Bishop(7, 2, false);
-        board[7][3] = new Queen(7, 3, false);
-        board[7][4] = new King(7, 4, false);
-        board[7][5] = new Bishop(7, 5, false);
-        board[7][6] = new Knight(7, 6, false);
-        board[7][7] = new Rook(7, 7, false);
+        board[7][0] = new Rook(7, 0, true);
+        board[7][1] = new Knight(7, 1, true);
+        board[7][2] = new Bishop(7, 2, true);
+        board[7][3] = new Queen(7, 3, true);
+        board[7][4] = new King(7, 4, true);
+        board[7][5] = new Bishop(7, 5, true);
+        board[7][6] = new Knight(7, 6, true);
+        board[7][7] = new Rook(7, 7, true);
 
         enPassantRow = -1;
         enPassantCol = -1;
@@ -67,25 +67,27 @@ class Board {
     }
 
     public boolean move(int startRow, int startCol, int endRow, int endCol) {
-
-        if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 7 || endCol > 7 || endCol < 7) {
+        System.out.println("Border conditions");
+        if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
             return false;
         }
-
+        System.out.println("Null catch");
         if (board[startRow][startCol] == null) {
             return false;
         }
-
+        System.out.println("White turn");
         if (board[startRow][startCol].isWhite() != whiteTurn) {
             return false;
         }
 
+        System.out.println("isCheckmate");
         if (isCheckmate()) {
             return false;
         }
 
         Piece currPiece = board[startRow][startCol];
 
+        System.out.println("Specific rook moving");
         //Specific rook moving so we can update castling rights
         if (currPiece instanceof Rook && currPiece.canMove(this, endRow, endCol)) {
             if (whiteShortCastle && startRow == 0 && startCol == 7) {
@@ -102,6 +104,7 @@ class Board {
             return true;
         }
 
+        System.out.println("If current piece is king");
         //If it is a king, check if the move is attempting castling
         if (currPiece instanceof King) {
             if (Math.abs(startCol - endCol) > 1) {
@@ -116,6 +119,7 @@ class Board {
             return false;
         }
 
+        System.out.println("Pawn checking");
         if (currPiece instanceof Pawn && startCol != endCol) {
             int dir = endCol - startCol;
 
@@ -125,11 +129,13 @@ class Board {
             }
         }
 
+        System.out.println("currPiece.canMove call");
         if (currPiece.canMove(this, endRow, endCol)) {
             uncheckedMove(startRow, startCol, endRow, endCol);
             return true;
         }
 
+        System.out.println("Catching anything that isn't right rn");
         //Catches anything 
         return false;
     }

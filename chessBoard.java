@@ -70,6 +70,9 @@ public class chessBoard extends JPanel {
                 System.out.println("Valid move!");
             } else {
                 System.out.println("Invalid move - piece cannot move there");
+                System.out.println("Move Tried: selectedRow: "+selectedRow+"; selectedCol: "+selectedCol);
+                System.out.println("             targetRow: "+targetRow+"; targetCol: "+targetCol);
+                System.out.println("Board[selectedRow][selectedCol]: "+game.board[selectedRow][selectedCol]);
             }
 
             // Reset dragging state
