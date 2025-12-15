@@ -49,6 +49,27 @@ class Board {
         blackLongCastle = true;
     }
 
+    public Board(Board other) {
+        this.board = new Piece[8][8];
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (other.board[row][col] != null) {
+                    this.board[row][col] = other.board[row][col].copy();
+                } else {
+                    this.board[row][col] = null;
+                }
+            }
+        }
+
+        this.enPassantRow = other.enPassantRow;
+        this.enPassantCol = other.enPassantCol;
+        this.whiteTurn = other.whiteTurn;
+        this.whiteShortCastle = other.whiteShortCastle;
+        this.whiteLongCastle = other.whiteLongCastle;
+        this.blackShortCastle = other.blackShortCastle;
+        this.blackLongCastle = other.blackLongCastle;
+    }
+
     public King getKing(boolean isWhite) {
         int r = isWhite ? 7 : 0;
         int c = isWhite ? 7 : 0;
@@ -146,7 +167,7 @@ class Board {
         }
 
         System.out.println("currPiece.canMove call");
-        System.out.println("currPiece instanceOf Pawn"+ (currPiece instanceof Pawn));
+        System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
         if (currPiece.canMove(this, endRow, endCol)) {
             uncheckedMove(startRow, startCol, endRow, endCol);
             return true;
@@ -313,7 +334,7 @@ class Board {
 
     }
 
-    public void changeTurn(){
+    public void changeTurn() {
         whiteTurn = !whiteTurn;
     }
 
