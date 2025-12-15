@@ -146,9 +146,6 @@ class Board {
                 return true;
             }
         }
-        
-            
-            
 
         if (currPiece instanceof Pawn currPawn) {
 
@@ -313,8 +310,6 @@ class Board {
 
     public boolean isCheckmate() {
 
-        King currKing = getKing(whiteTurn);
-
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board[i][j] == null) {
@@ -326,9 +321,6 @@ class Board {
 
                 for (int row = 0; row < 8; row++) {
                     for (int col = 0; col < 8; col++) {
-                        if (board[i][j] == null) {
-                            continue;
-                        }
                         if (board[i][j].canMove(this, row, col)) {
                             Piece movingPiece = board[i][j];
                             Piece oldPiece = board[row][col];
@@ -338,13 +330,12 @@ class Board {
                             board[row][col].col = col;
                             board[i][j] = null;
 
-                            boolean wouldCheck = currKing.isInCheck(this);
+                            boolean wouldCheck = getKing(whiteTurn).isInCheck(this);
 
                             board[i][j] = movingPiece;
                             board[row][col] = oldPiece;
 
                             if (!wouldCheck) {
-
                                 return false;
                             }
                         }
