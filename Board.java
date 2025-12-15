@@ -236,68 +236,29 @@ class Board {
         if (castle.equals("O-O")) {
             if (whiteTurn && whiteShortCastle) {
                 System.out.println("Part 1");
-                if (board[0][5] != null || board[0][6] != null) {
+                if (board[7][5] != null || board[7][6] != null) {
+                    System.out.println("Something is null");
                     return false;
                 }
-                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
-                King tempKingSecond = new King(0, 5, board[0][4].isWhite);
+                King tempKingFirst = new King(7, 4, board[7][4].isWhite);
+                King tempKingSecond = new King(7, 5, board[7][4].isWhite);
                 System.out.println("Part 2");
 
-                if ((tempKingFirst.canMove(this, 0, 5) && tempKingSecond.canMove(this, 0, 6)) == false) {
+                if ((tempKingFirst.canMove(this, 7, 5) && tempKingSecond.canMove(this, 7, 6)) == false) {
                     return false;
                 }
                 System.out.println("Part 3");
 
-                board[0][6] = new King(0, 6, true);
-                board[0][5] = new Rook(0, 5, true);
-                board[0][4] = null;
-                board[0][7] = null;
+                board[7][6] = new King(7, 6, true);
+                board[7][5] = new Rook(7, 5, true);
+                board[7][4] = null;
+                board[7][7] = null;
                 whiteShortCastle = false;
                 whiteLongCastle = false;
                 return true;
             }
 
             if (whiteTurn && whiteLongCastle) {
-                if (board[0][1] != null || board[0][2] != null || board[0][3] != null) {
-                    return false;
-                }
-                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
-                King tempKingSecond = new King(0, 3, board[0][4].isWhite);
-
-                if ((tempKingFirst.canMove(this, 0, 3) && tempKingSecond.canMove(this, 0, 2)) == false) {
-                    return false;
-                }
-
-                board[0][2] = new King(0, 2, true);
-                board[0][3] = new Rook(0, 3, true);
-                board[0][4] = null;
-                board[0][0] = null;
-                whiteShortCastle = false;
-                whiteLongCastle = false;
-                return true;
-            }
-
-            if (!whiteTurn && blackShortCastle) {
-                if (board[7][5] != null || board[7][6] != null) {
-                    return false;
-                }
-                King tempKingFirst = new King(7, 4, board[7][4].isWhite);
-                King tempKingSecond = new King(7, 5, board[7][4].isWhite);
-
-                if ((tempKingFirst.canMove(this, 7, 5) && tempKingSecond.canMove(this, 7, 6)) == false) {
-                    return false;
-                }
-
-                board[7][6] = new King(7, 6, false);
-                board[7][5] = new Rook(7, 5, false);
-                board[7][4] = null;
-                board[7][7] = null;
-                blackShortCastle = false;
-                blackLongCastle = false;
-                return true;
-            }
-
-            if (!whiteTurn && blackLongCastle) {
                 if (board[7][1] != null || board[7][2] != null || board[7][3] != null) {
                     return false;
                 }
@@ -308,10 +269,50 @@ class Board {
                     return false;
                 }
 
-                board[7][2] = new King(7, 2, false);
-                board[7][3] = new Rook(7, 3, false);
+                board[7][2] = new King(7, 2, true);
+                board[7][3] = new Rook(7, 3, true);
                 board[7][4] = null;
                 board[7][0] = null;
+                whiteShortCastle = false;
+                whiteLongCastle = false;
+                return true;
+            }
+
+            if (!whiteTurn && blackShortCastle) {
+                if (board[0][5] != null || board[0][6] != null) {
+                    return false;
+                }
+                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
+                King tempKingSecond = new King(0, 5, board[0][4].isWhite);
+
+                if ((tempKingFirst.canMove(this, 0, 5) && tempKingSecond.canMove(this, 0, 6)) == false) {
+                    return false;
+                }
+
+                board[0][6] = new King(0, 6, false);
+                board[0][5] = new Rook(0, 5, false);
+                board[0][4] = null;
+                board[0][7] = null;
+                blackShortCastle = false;
+                blackLongCastle = false;
+                return true;
+            }
+
+            if (!whiteTurn && blackLongCastle) {
+                if (board[0][1] != null || board[0][2] != null || board[0][3] != null) {
+                    return false;
+                }
+                King tempKingFirst = new King(0, 4, board[0][4].isWhite);
+                King tempKingSecond = new King(0, 3, board[0][4].isWhite);
+
+                if ((tempKingFirst.canMove(this, 0, 3) && tempKingSecond.canMove(this, 0, 2)) == false) {
+                    return false;
+                }
+
+                board[0][2] = new King(0, 2, false);
+                board[0][3] = new Rook(0, 3, false);
+                board[0][4] = null;
+                board[0][0] = null;
                 blackShortCastle = false;
                 blackLongCastle = false;
                 return true;
