@@ -310,6 +310,7 @@ class Board {
     }
 
     public boolean isCheckmate() {
+        System.out.println("============================================");
         King currKing = getKing(whiteTurn);
 
         for (int i = 0; i < 8; i++) {
@@ -341,6 +342,7 @@ class Board {
                             board[row][col] = oldPiece;
 
                             if (!wouldCheck) {
+                                System.out.println("============================================");
                                 return false;
                             }
                         }
@@ -348,7 +350,7 @@ class Board {
                 }
             }
         }
-
+        System.out.println("============================================");
         return true;
 
     }
