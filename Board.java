@@ -350,6 +350,11 @@ class Board {
 
     public void changeTurn() {
         whiteTurn = !whiteTurn;
+        if (whiteTurn == enPassantIsWhite) {
+            enPassantCol = -1;
+            enPassantRow = -1;
+            enPassantIsWhite = false;
+        }
     }
 
 }
