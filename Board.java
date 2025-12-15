@@ -68,7 +68,7 @@ class Board {
 
     public boolean move(int startRow, int startCol, int endRow, int endCol) {
 
-        if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 7 || endCol > 7 || endCol < 7) {
+        if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
             return false;
         }
 
