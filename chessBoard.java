@@ -10,17 +10,56 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JPanel;
 
+/**
+ * A JPanel that displays and manages an interactive chess board.
+ * 
+ * This class handles the graphical representation of the chess game,
+ * including piece rendering, drag-and-drop functionality, and visual
+ * feedback for game state. It processes mouse events to allow players
+ * to move pieces by clicking and dragging.
+ */
 public class chessBoard extends JPanel {
 
+    /**
+     * The underlying game logic and board state
+     */
     @SuppressWarnings("FieldMayBeFinal")
     private Board game;
+    
+    /**
+     * The row of the currently selected piece (-1 if no piece is selected)
+     */
     private int selectedRow = -1;
+    
+    /**
+     * The column of the currently selected piece (-1 if no piece is selected)
+     */
     private int selectedCol = -1;
+    
+    /**
+     * The current x-coordinate of the mouse during dragging
+     */
     private int dragX = 0;
+    
+    /**
+     * The current y-coordinate of the mouse during dragging
+     */
     private int dragY = 0;
+    
+    /**
+     * Indicates whether a piece is currently being dragged
+     */
     private boolean isDragging = false;
+    
+    /**
+     * The size of each square on the chess board in pixels
+     */
     private int squareSize = 0;
 
+    /**
+     * Constructs a new chess board panel with an initialized game.
+     * Sets up mouse listeners for drag-and-drop piece movement.
+     */
     public chessBoard() {
         game = new Board();
 
@@ -44,6 +83,13 @@ public class chessBoard extends JPanel {
         });
     }
 
+    /**
+     * Handles mouse press events to initiate piece selection and dragging.
+     * Determines which square was clicked and begins dragging if a piece
+     * is present at that location.
+     *
+     * @param e the MouseEvent containing press location information
+     */
     private void handleMousePressed(MouseEvent e) {
         // Calculate which square was clicked
         int col = e.getX() / squareSize;
@@ -60,6 +106,13 @@ public class chessBoard extends JPanel {
         }
     }
 
+    /**
+     * Handles mouse drag events to update the position of the piece being dragged.
+     * Updates the drag coordinates and triggers a repaint to show the piece
+     * following the cursor.
+     *
+     * @param e the MouseEvent containing current mouse position
+     */
     private void handleMouseDragged(MouseEvent e) {
         if (isDragging) {
             dragX = e.getX();
@@ -68,6 +121,13 @@ public class chessBoard extends JPanel {
         }
     }
 
+    /**
+     * Handles mouse release events to complete a move attempt.
+     * Calculates the target square, validates the move through the game logic,
+     * updates the turn if the move is legal, and resets the dragging state.
+     *
+     * @param e the MouseEvent containing release location information
+     */
     private void handleMouseReleased(MouseEvent e) {
         if (isDragging) {
             // Calculate target square
@@ -97,6 +157,14 @@ public class chessBoard extends JPanel {
         }
     }
 
+    /**
+     * Paints the chess board, pieces, and game status.
+     * Draws the checkerboard pattern, renders all pieces in their current
+     * positions (except the piece being dragged), shows the dragged piece
+     * at the cursor position, and displays game over status if applicable.
+     *
+     * @param g the Graphics context for painting
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -178,6 +246,12 @@ public class chessBoard extends JPanel {
         }
     }
 
+    /**
+     * Converts a Piece object to its corresponding Unicode chess symbol.
+     *
+     * @param piece the piece to convert
+     * @return the Unicode character representing the piece (white or black variant)
+     */
     private String getPieceSymbol(Piece piece) {
         // Convert piece objects to Unicode chess symbols
         boolean isWhite = piece.isWhite(); // Adjust based on your Piece class
@@ -198,6 +272,13 @@ public class chessBoard extends JPanel {
         return "?";
     }
 
+    /**
+     * Determines the current game status.
+     * Returns a message indicating checkmate (with the winner) or the
+     * current player's turn.
+     *
+     * @return a String describing the current game state
+     */
     public String getGameStatus() {
         if (game.isCheckmate()) {
             return game.whiteTurn ? "Black Wins!" : "White Wins!";

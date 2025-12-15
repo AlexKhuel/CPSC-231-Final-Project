@@ -21,9 +21,9 @@ class Knight extends Piece {
     /**
      * Constructor for the Knight object.
      *
-     * @param r - the piece's row position.
-     * @param c - the piece's column position.
-     * @param color - the piece's color (black or white).
+     * @param row - the piece's row position.
+     * @param col - the piece's column position.
+     * @param isWhite - the piece's color (true for white, false for black).
      */
     public Knight(int row, int col, boolean isWhite) {
         this.row = row;
@@ -31,6 +31,11 @@ class Knight extends Piece {
         this.isWhite = isWhite;
     }
 
+    /**
+     * Creates a deep copy of this Knight piece.
+     *
+     * @return a new Knight object with the same attributes as this knight
+     */
     @Override
     public Piece copy() {
         return new Knight(this.row, this.col, this.isWhite);
@@ -38,10 +43,16 @@ class Knight extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
+     * 
+     * The Knight moves in an L-shape: either 2 squares in one direction and
+     * 1 square perpendicular, or 1 square in one direction and 2 squares
+     * perpendicular. The Knight can jump over other pieces. The move must
+     * not result in the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
+     * @return true if the move is legal, false otherwise
      */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
@@ -89,20 +100,34 @@ class Knight extends Piece {
 
     }
 
+    /**
+     * Gets the current row position of this knight.
+     *
+     * @return the row position (0-7)
+     */
     @Override
     public int getRow() {
         return row;
     }
 
+    /**
+     * Gets the current column position of this knight.
+     *
+     * @return the column position (0-7)
+     */
     @Override
     public int getCol() {
         return col;
     }
 
+    /**
+     * Determines the color of this knight.
+     *
+     * @return true if this knight is white, false if black
+     */
     @Override
     public boolean isWhite() {
         return isWhite;
     }
 
 }
-

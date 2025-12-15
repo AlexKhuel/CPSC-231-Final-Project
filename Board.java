@@ -6,19 +6,66 @@ By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 Date Completed: December 14, 2025
  */
 
+/**
+ * Represents a chess board and manages the game state and rules.
+ * 
+ * This class handles piece placement, move validation, turn management,
+ * castling rights, en passant captures, and checkmate detection.
+ */
 class Board {
 
+    /**
+     * 2D array representing the 8x8 chess board where pieces are positioned
+     */
     Piece[][] board = new Piece[8][8];
 
+    /**
+     * The row position where en passant capture is currently available
+     */
     int enPassantRow;
+    
+    /**
+     * The column position where en passant capture is currently available
+     */
     int enPassantCol;
+    
+    /**
+     * The color of the pawn that can be captured via en passant
+     */
     boolean enPassantIsWhite;
+    
+    /**
+     * Tracks whose turn it is (true for white, false for black)
+     */
     boolean whiteTurn;
+    
+    /**
+     * Indicates if white can still castle kingside (short castle)
+     */
     boolean whiteShortCastle;
+    
+    /**
+     * Indicates if white can still castle queenside (long castle)
+     */
     boolean whiteLongCastle;
+    
+    /**
+     * Indicates if black can still castle kingside (short castle)
+     */
     boolean blackShortCastle;
+    
+    /**
+     * Indicates if black can still castle queenside (long castle)
+     */
     boolean blackLongCastle;
 
+    /**
+     * Default constructor that initializes a standard chess board with all
+     * pieces in their starting positions. Sets up both sides with pawns,
+     * rooks, knights, bishops, queens, and kings in regulation positions.
+     * Initializes game state with white to move first and all castling
+     * rights available.
+     */
     public Board() {
         board = new Piece[8][8];
 
@@ -57,6 +104,13 @@ class Board {
         blackLongCastle = true;
     }
 
+    /**
+     * Copy constructor that creates a deep copy of another board.
+     * Copies all pieces and game state including turn, castling rights,
+     * and en passant information.
+     *
+     * @param other the Board object to copy
+     */
     public Board(Board other) {
         this.board = new Piece[8][8];
         for (int row = 0; row < 8; row++) {
@@ -76,6 +130,12 @@ class Board {
         this.blackLongCastle = other.blackLongCastle;
     }
 
+    /**
+     * Locates and returns the King piece of the specified color.
+     *
+     * @param isWhite true to find the white king, false for the black king
+     * @return the King object of the specified color, or null if not found
+     */
     public King getKing(boolean isWhite) {
         int r = isWhite ? 7 : 0;
         int c = isWhite ? 7 : 0;
@@ -93,6 +153,18 @@ class Board {
         return null; //somethings wrong
     }
 
+    /**
+     * Attempts to move a piece from the starting position to the ending position.
+     * Validates the move according to chess rules, including turn order, piece
+     * movement patterns, special moves (castling, en passant, pawn promotion),
+     * and ensures the move doesn't leave the king in check.
+     *
+     * @param startRow the starting row position (0-7)
+     * @param startCol the starting column position (0-7)
+     * @param endRow the target row position (0-7)
+     * @param endCol the target column position (0-7)
+     * @return true if the move was successfully executed, false otherwise
+     */
     public boolean move(int startRow, int startCol, int endRow, int endCol) {
         if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
             return false;
@@ -186,6 +258,18 @@ class Board {
         return false;
     }
 
+    /**
+     * Moves a piece without performing validation checks.
+     * Used internally for hypothetical move testing and board copying.
+     * Creates a new piece at the destination and removes the piece from
+     * the starting position.
+     *
+     * @param currPiece the piece to move
+     * @param startRow the starting row position
+     * @param startCol the starting column position
+     * @param endRow the target row position
+     * @param endCol the target column position
+     */
     public void uncheckedMove(Piece currPiece, int startRow, int startCol, int endRow, int endCol) {
         if (currPiece instanceof Pawn) {
             board[endRow][endCol] = new Pawn(endRow, endCol, board[startRow][startCol].isWhite(), true);
@@ -208,6 +292,16 @@ class Board {
         }
     }
 
+    /**
+     * Executes an en passant capture move.
+     * Validates the move and removes the captured pawn from the board.
+     *
+     * @param startRow the starting row of the capturing pawn
+     * @param startCol the starting column of the capturing pawn
+     * @param endRow the target row for the capturing pawn
+     * @param endCol the target column for the capturing pawn
+     * @return true if the en passant move was successful, false otherwise
+     */
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol) {
         int direction = board[startRow][startCol].isWhite ? 1 : -1;
 
@@ -224,6 +318,15 @@ class Board {
         return true;
     }
 
+    /**
+     * Attempts to perform a castling move (kingside or queenside).
+     * Validates that castling is legal by checking that the squares between
+     * the king and rook are empty, the king is not in check, and the king
+     * does not pass through or land on a square that is under attack.
+     *
+     * @param endCol the target column for the king (2 for queenside, 6 for kingside)
+     * @return true if castling was successfully executed, false otherwise
+     */
     private boolean castle(int endCol) {
         System.out.println("Getting to castle");
         String castle;
@@ -324,6 +427,13 @@ class Board {
 
     }
 
+    /**
+     * Determines if the current player is in checkmate.
+     * Tests all possible moves for all pieces belonging to the current player
+     * to see if any move would result in the king not being in check.
+     *
+     * @return true if the current player is in checkmate, false otherwise
+     */
     public boolean isCheckmate() {
 
         for (int i = 0; i < 8; i++) {
@@ -364,6 +474,11 @@ class Board {
 
     }
 
+    /**
+     * Switches the current turn to the other player.
+     * Also clears en passant availability if it was set by the player
+     * whose turn just ended.
+     */
     public void changeTurn() {
         whiteTurn = !whiteTurn;
         if (whiteTurn == enPassantIsWhite) {

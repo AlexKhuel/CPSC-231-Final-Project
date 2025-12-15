@@ -27,6 +27,7 @@ class Pawn extends Piece {
      * @param isWhite true if this pawn belongs to white, false if black
      * @param row the starting row position on the board (0-7)
      * @param col the starting column position on the board (0-7)
+     * @param hasMoved true if the pawn has already moved, false otherwise
      */
     public Pawn(int row, int col, boolean isWhite, boolean hasMoved) {
         this.row = row;
@@ -35,11 +36,27 @@ class Pawn extends Piece {
         this.hasMoved = hasMoved;
     }
 
+    /**
+     * Creates a deep copy of this Pawn piece.
+     *
+     * @return a new Pawn object with the same attributes as this pawn
+     */
     @Override
     public Piece copy() {
         return new Pawn(this.row, this.col, this.isWhite, this.hasMoved);
     }
 
+    /**
+     * Determines if the pawn can legally move to the specified position.
+     * Validates the move according to pawn movement rules (forward movement,
+     * diagonal capture, en passant) and ensures the move does not leave the
+     * player's king in check.
+     *
+     * @param gameBoard the current game board
+     * @param endRow the target row position (0-7)
+     * @param endCol the target column position (0-7)
+     * @return true if the move is legal, false otherwise
+     */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
         int direction = isWhite ? -1 : 1;
@@ -58,6 +75,17 @@ class Pawn extends Piece {
         return true;
     }
 
+    /**
+     * Validates whether the target position is a legal move for this pawn
+     * according to chess rules. Checks for standard forward movement, initial
+     * two-square move, diagonal capture, and en passant.
+     *
+     * @param gameBoard the current game board
+     * @param endCol the target column position
+     * @param endRow the target row position
+     * @param direction the direction of movement (-1 for white, 1 for black)
+     * @return true if the target position represents a valid pawn move, false otherwise
+     */
     private boolean isValid(Board gameBoard, int endCol, int endRow, int direction) {
 
         Piece target = getTarget(gameBoard.board, endCol, endRow);
@@ -95,6 +123,15 @@ class Pawn extends Piece {
 
     }
 
+    /**
+     * Retrieves the piece at the specified board position.
+     *
+     * @param board the 2D array representing the chess board
+     * @param endCol the column position to check
+     * @param endRow the row position to check
+     * @return the Piece at the specified position, or null if the position
+     *         is out of bounds or empty
+     */
     private Piece getTarget(Piece[][] board, int endCol, int endRow) {
         if (endCol >= 8 || endCol < 0 || endRow >= 8 || endRow < 0) {
             return null;
@@ -102,16 +139,31 @@ class Pawn extends Piece {
         return board[endRow][endCol];
     }
 
+    /**
+     * Gets the current row position of this pawn.
+     *
+     * @return the row position (0-7)
+     */
     @Override
     public int getRow() {
         return row;
     }
 
+    /**
+     * Gets the current column position of this pawn.
+     *
+     * @return the column position (0-7)
+     */
     @Override
     public int getCol() {
         return col;
     }
 
+    /**
+     * Determines the color of this pawn.
+     *
+     * @return true if this pawn is white, false if black
+     */
     @Override
     public boolean isWhite() {
         return isWhite;

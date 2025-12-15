@@ -20,9 +20,9 @@ class Bishop extends Piece {
     /**
      * Constructor for the Bishop object.
      *
-     * @param r - the piece's row position.
-     * @param c - the piece's column position.
-     * @param color - the piece's color (black or white).
+     * @param row - the piece's row position.
+     * @param col - the piece's column position.
+     * @param isWhite - the piece's color (true for white, false for black).
      */
     public Bishop(int row, int col, boolean isWhite) {
         this.row = row;
@@ -30,6 +30,11 @@ class Bishop extends Piece {
         this.isWhite = isWhite;
     }
 
+    /**
+     * Creates a deep copy of this Bishop piece.
+     *
+     * @return a new Bishop object with the same attributes as this bishop
+     */
     @Override
     public Piece copy() {
         return new Bishop(this.row, this.col, this.isWhite);
@@ -37,10 +42,15 @@ class Bishop extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
+     * 
+     * The Bishop can move any number of squares diagonally, but cannot
+     * jump over other pieces. The path must be clear and the move must
+     * not result in the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
+     * @return true if the move is legal, false otherwise
      */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
@@ -88,20 +98,34 @@ class Bishop extends Piece {
         }
     }
 
+    /**
+     * Gets the current row position of this bishop.
+     *
+     * @return the row position (0-7)
+     */
     @Override
     public int getRow() {
         return row;
     }
 
+    /**
+     * Gets the current column position of this bishop.
+     *
+     * @return the column position (0-7)
+     */
     @Override
     public int getCol() {
         return col;
     }
 
+    /**
+     * Determines the color of this bishop.
+     *
+     * @return true if this bishop is white, false if black
+     */
     @Override
     public boolean isWhite() {
         return isWhite;
     }
 
 }
-

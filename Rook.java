@@ -21,9 +21,9 @@ class Rook extends Piece {
     /**
      * Constructor for the Rook object.
      *
-     * @param r - the piece's row position.
-     * @param c - the piece's column position.
-     * @param color - the piece's color (black or white).
+     * @param row - the piece's row position.
+     * @param col - the piece's column position.
+     * @param isWhite - the piece's color (true for white, false for black).
      */
     public Rook(int row, int col, boolean isWhite) {
         this.row = row;
@@ -31,6 +31,11 @@ class Rook extends Piece {
         this.isWhite = isWhite;
     }
 
+    /**
+     * Creates a deep copy of this Rook piece.
+     *
+     * @return a new Rook object with the same attributes as this rook
+     */
     @Override
     public Piece copy() {
         return new Rook(this.row, this.col, this.isWhite);
@@ -38,10 +43,15 @@ class Rook extends Piece {
 
     /**
      * Overriden function. Determines whether a move is valid.
+     * 
+     * The Rook can move any number of squares horizontally or vertically,
+     * but cannot jump over other pieces. The path must be clear and the
+     * move must not result in the player's king being in check.
      *
      * @param gameBoard - the Board object where the game is taking place.
      * @param endRow - the row of the move location that is being checked.
      * @param endCol - the column of the move location that is being checked.
+     * @return true if the move is legal, false otherwise
      */
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
@@ -97,20 +107,34 @@ class Rook extends Piece {
 
     }
 
+    /**
+     * Gets the current row position of this rook.
+     *
+     * @return the row position (0-7)
+     */
     @Override
     public int getRow() {
         return row;
     }
 
+    /**
+     * Gets the current column position of this rook.
+     *
+     * @return the column position (0-7)
+     */
     @Override
     public int getCol() {
         return col;
     }
 
+    /**
+     * Determines the color of this rook.
+     *
+     * @return true if this rook is white, false if black
+     */
     @Override
     public boolean isWhite() {
         return isWhite;
     }
 
 }
-
