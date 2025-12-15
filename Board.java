@@ -313,4 +313,8 @@ class Board {
 
     }
 
+    public void changeTurn(){
+        whiteTurn = !whiteTurn;
+    }
+
 }

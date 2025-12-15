@@ -66,8 +66,12 @@ public class chessBoard extends JPanel {
             int targetRow = e.getY() / squareSize;
 
             // Let ChessGame handle all validation (bounds, move legality, etc.)
-            if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
+            if (game.isCheckmate()){
+                repaint();
+                
+            }else if (game.move(selectedRow, selectedCol, targetRow, targetCol)) {
                 System.out.println("Valid move!");
+                game.changeTurn();
             } else {
                 System.out.println("Invalid move - piece cannot move there");
                 System.out.println("Move Tried: selectedRow: "+selectedRow+"; selectedCol: "+selectedCol);
@@ -92,6 +96,9 @@ public class chessBoard extends JPanel {
         int panelWidth = getWidth();
         int panelHeight = getHeight();
         squareSize = Math.min(panelWidth, panelHeight) / 8;
+
+        String gameStatus = getGameStatus();
+        boolean gameOver = gameStatus.contains("Wins!");
 
         // Draw the chess board squares
         for (int row = 0; row < 8; row++) {
@@ -142,6 +149,23 @@ public class chessBoard extends JPanel {
                 g2d.drawString(symbol, x, y);
             }
         }
+
+          if (gameOver) {
+            // Semi-transparent overlay
+            g2d.setColor(new Color(0, 0, 0, 150));
+            g2d.fillRect(0, 0, panelWidth, panelHeight);
+            
+            // Draw winner message
+            g2d.setFont(new Font("Arial", Font.BOLD, 48));
+            g2d.setColor(Color.WHITE);
+            fm = g2d.getFontMetrics();
+            
+            String message = gameStatus;
+            int x = (panelWidth - fm.stringWidth(message)) / 2;
+            int y = (panelHeight - fm.getHeight()) / 2 + fm.getAscent();
+            
+            g2d.drawString(message, x, y);
+        }
     }
 
     private String getPieceSymbol(Piece piece) {
@@ -163,4 +187,13 @@ public class chessBoard extends JPanel {
         }
         return "?";
     }
+    public String getGameStatus() {
+    if (game.isCheckmate()) {
+        return game.whiteTurn ? "Black Wins!" : "White Wins!";
+    }
+    // if (game.isCheck()) {
+    //     return "Check!";
+    // }
+    return game.whiteTurn ? "White's Turn" : "Black's Turn";
+}
 }
