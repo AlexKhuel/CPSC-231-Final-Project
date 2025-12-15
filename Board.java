@@ -112,7 +112,7 @@ class Board {
         if (currPiece instanceof Rook currRook && currRook.canMove(this, endRow, endCol)) {
             if (whiteShortCastle && startRow == 0 && startCol == 7) {
 
-                System.out.println("What the helly");
+                
                 whiteShortCastle = false;
             } else if (whiteLongCastle && startRow == 0 && startCol == 0) {
                 whiteLongCastle = false;
@@ -127,6 +127,9 @@ class Board {
 
             return true;
         }
+        
+        
+        
 
         System.out.println("If current piece is king");
         //If it is a king, check if the move is attempting castling
@@ -158,14 +161,22 @@ class Board {
                 return true;
             }
         }
+        
+            
+            
 
         System.out.println("currPiece.canMove call");
-        if (currPiece instanceof Pawn currPawn) {
-            System.out.println("Not a valid move for some reason");
-            if (currPawn.canMove(this, endRow, endCol)) {
-                System.out.println("Math.abs is wrong");
+        if (currPiece instanceof Pawn currPawn && currPawn.canMove(this, endRow, endCol)) {
+            int something = currPawn.isWhite ? 0 : 6;
+            int direction = currPawn.isWhite ? -1 : 0;
+            if (currPawn.getRow()+direction == something){
+                board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+                return true;
+            }else {
+                
                 if (Math.abs(currPawn.getRow() - endRow) == 2) {
-                    System.out.println("Should be updating the right stuff now");
+                    
                     enPassantIsWhite = currPawn.isWhite;
                     enPassantCol = endCol;
                     enPassantRow = currPawn.isWhite ? endRow + 1 : endRow - 1;
