@@ -156,12 +156,18 @@ class Board {
             }
         }
 
-        if (currPiece instanceof Pawn currPawn) {
-
-            if (currPawn.canMove(this, endRow, endCol)) {
-
+         System.out.println("currPiece.canMove call");
+        if (currPiece instanceof Pawn currPawn && currPawn.canMove(this, endRow, endCol)) {
+            int something = currPawn.isWhite ? 0 : 6;
+            int direction = currPawn.isWhite ? -1 : 0;
+            if (currPawn.getRow()+direction == something){
+                board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+                return true;
+            }else {
+                
                 if (Math.abs(currPawn.getRow() - endRow) == 2) {
-
+                    
                     enPassantIsWhite = currPawn.isWhite;
                     enPassantCol = endCol;
                     enPassantRow = currPawn.isWhite ? endRow + 1 : endRow - 1;
@@ -171,7 +177,6 @@ class Board {
                 return true;
             }
         }
-
         System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
 
         if (currPiece.canMove(this, endRow, endCol)) {
