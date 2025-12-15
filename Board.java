@@ -146,6 +146,7 @@ class Board {
         }
 
         System.out.println("currPiece.canMove call");
+        System.out.println("currPiece instanceOf Pawn"+ (currPiece instanceof Pawn));
         if (currPiece.canMove(this, endRow, endCol)) {
             uncheckedMove(startRow, startCol, endRow, endCol);
             return true;
