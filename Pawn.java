@@ -39,7 +39,7 @@ class Pawn extends Piece {
             return false;
         }
         King currKing = gameBoard.getKing(this.isWhite);
-        Board fakeBoard = gameBoard;
+        Board fakeBoard = new Board(gameBoard);
         fakeBoard.uncheckedMove(row, col, endRow, endCol); 
         if (currKing.isInCheck(fakeBoard, currKing.getRow(), currKing.getCol())) {
             return false;
