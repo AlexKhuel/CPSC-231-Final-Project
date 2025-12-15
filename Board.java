@@ -127,8 +127,8 @@ class Board {
 
         if (currPiece instanceof Pawn currPawn) {
             if (currPawn.canMove(this, endRow, endCol)) {
-                uncheckedMove(startRow, startCol, endRow, endCol);
-                currPawn.hasMoved = true;
+                board[endRow][endCol] = new Pawn(endRow, endCol, currPawn, true);
+                board[startRow][startCol] = null;
                 return true;
             }
         }
