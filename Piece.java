@@ -4,7 +4,7 @@ Chess Board
 By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 
 Date Completed: December 14, 2025
-*/
+ */
 
 
 /**

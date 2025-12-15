@@ -4,9 +4,7 @@ Chess Board
 By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 
 Date Completed: December 14, 2025
-*/
-
-
+ */
 
 /**
  * This class is used to represent a Knight piece in a game of chess.
@@ -67,9 +65,9 @@ class Knight extends Piece {
             case 1 -> {
                 if (Math.abs(endCol - col) == 2) {
                     if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
-                         King currKing = gameBoard.getKing(this.isWhite);
-                         Board fakeBoard = new Board(gameBoard);
-                         fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                        King currKing = gameBoard.getKing(this.isWhite);
+                        Board fakeBoard = new Board(gameBoard);
+                        fakeBoard.uncheckedMove(this, row, col, endRow, endCol);
                         return !(currKing.isInCheck(fakeBoard));
                     } else {
                         return false;
@@ -81,9 +79,9 @@ class Knight extends Piece {
             case 2 -> {
                 if (Math.abs(endCol - col) == 1) {
                     if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
-                         King currKing = gameBoard.getKing(this.isWhite);
-                         Board fakeBoard = new Board(gameBoard);
-                        fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                        King currKing = gameBoard.getKing(this.isWhite);
+                        Board fakeBoard = new Board(gameBoard);
+                        fakeBoard.uncheckedMove(this, row, col, endRow, endCol);
                         return !(currKing.isInCheck(fakeBoard));
                     } else {
                         return false;
