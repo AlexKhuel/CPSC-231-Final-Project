@@ -37,7 +37,7 @@ class Knight extends Piece {
     @Override
     public boolean canMove(Board gameBoard, int endRow, int endCol) {
 
-        if (endRow == row && endCol == col) {
+        if ((endRow == row) && (endCol == col)) {
             return false;
         } else if (endCol < 0 || endRow < 0 || endCol > 7 || endRow > 7) {
             return false;
@@ -47,7 +47,10 @@ class Knight extends Piece {
             case 1 -> {
                 if (Math.abs(endCol - col) == 2) {
                     if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
-                        return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
+                         King currKing = gameBoard.getKing(this.isWhite);
+                         Board fakeBoard = new Board(gameBoard);
+                         fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                        return !(currKing.isInCheck(fakeBoard));
                     } else {
                         return false;
                     }
@@ -58,7 +61,10 @@ class Knight extends Piece {
             case 2 -> {
                 if (Math.abs(endCol - col) == 1) {
                     if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
-                        return !(gameBoard.getKing(isWhite).isInCheck(gameBoard, endRow, endCol));
+                         King currKing = gameBoard.getKing(this.isWhite);
+                         Board fakeBoard = new Board(gameBoard);
+                        fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                        return !(currKing.isInCheck(fakeBoard));
                     } else {
                         return false;
                     }

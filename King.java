@@ -63,7 +63,7 @@ class King extends Piece {
             col = endCol;
 
             // Check if king would be in check at new position
-            boolean wouldBeInCheck = isInCheck(gameBoard, endRow, endCol);
+            boolean wouldBeInCheck = isInCheck(gameBoard);
 
             // Restore king's position
             row = oldRow;
@@ -88,7 +88,7 @@ class King extends Piece {
      * @param kingCol - the column where the king is located.
      * @return true if the king is in check, false otherwise.
      */
-    public boolean isInCheck(Board gameBoard, int kingRow, int kingCol) {
+    public boolean isInCheck(Board gameBoard) {
         // Check if any opponent piece can attack the king at (kingRow, kingCol)
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -96,7 +96,7 @@ class King extends Piece {
                 if (piece != null && piece.isWhite != isWhite) {
                     // Check if this opponent piece can attack the king's position
                     // We need to check basic movement without recursively checking for check
-                    if (canPieceAttack(piece, gameBoard, i, j, kingRow, kingCol)) {
+                    if (canPieceAttack(piece, gameBoard, i, j, row, col)) {
                         return true;
                     }
                 }
@@ -181,53 +181,6 @@ class King extends Piece {
         return true;
     }
 
-    /**
-     * Checks if the king can castle to the specified side. Uses the Board's
-     * castling rights flags instead of checking piece movement.
-     *
-     * @param gameBoard - the Board object where the game is taking place.
-     * @param isKingSide - true for kingside castle, false for queenside castle.
-     * @return true if castling is legal, false otherwise.
-     */
-    public boolean canCastle(Board gameBoard, boolean isKingSide) {
-        // Check castling rights from Board
-        boolean hasCastlingRights;
-        if (isWhite) {
-            hasCastlingRights = isKingSide ? gameBoard.whiteShortCastle : gameBoard.whiteLongCastle;
-        } else {
-            hasCastlingRights = isKingSide ? gameBoard.blackShortCastle : gameBoard.blackLongCastle;
-        }
-
-        if (!hasCastlingRights) {
-            return false;
-        }
-
-        // Check if squares between king and rook are empty
-        int rookCol = isKingSide ? 7 : 0;
-        int start = Math.min(col, rookCol);
-        int end = Math.max(col, rookCol);
-
-        for (int i = start + 1; i < end; i++) {
-            if (gameBoard.board[row][i] != null) {
-                return false;
-            }
-        }
-
-        // Check if king is currently in check
-        if (isInCheck(gameBoard, row, col)) {
-            return false;
-        }
-
-        // Check if king passes through check or ends in check
-        int direction = isKingSide ? 1 : -1;
-        for (int i = 1; i <= 2; i++) {
-            if (isInCheck(gameBoard, row, col + (direction * i))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Returns the symbol representing this piece.
