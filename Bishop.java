@@ -4,8 +4,7 @@ Chess Board
 By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 
 Date Completed: December 14, 2025
-*/
-
+ */
 
 /**
  * This class is used to represent a Bishop piece in a game of chess.
@@ -77,7 +76,7 @@ class Bishop extends Piece {
             if (gameBoard.board[endRow][endCol] == null || gameBoard.board[endRow][endCol].isWhite != isWhite) {
                 King currKing = gameBoard.getKing(this.isWhite);
                 Board fakeBoard = new Board(gameBoard);
-                fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+                fakeBoard.uncheckedMove(this, row, col, endRow, endCol);
                 return !(currKing.isInCheck(fakeBoard));
             } else {
                 return false;
@@ -104,4 +103,3 @@ class Bishop extends Piece {
     }
 
 }
-

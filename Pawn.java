@@ -4,9 +4,7 @@ Chess Board
 By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 
 Date Completed: December 14, 2025
-*/
-
-
+ */
 
 /**
  * Represents a Pawn piece in a chess game.
@@ -49,7 +47,7 @@ class Pawn extends Piece {
         }
         King currKing = gameBoard.getKing(this.isWhite);
         Board fakeBoard = new Board(gameBoard);
-        fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
+        fakeBoard.uncheckedMove(this, row, col, endRow, endCol);
         if (currKing.isInCheck(fakeBoard)) {
             return false;
         }
@@ -63,33 +61,25 @@ class Pawn extends Piece {
         Piece target = getTarget(gameBoard.board, endCol, endRow);
 
         //move forward one square
-        
         if (endCol == this.col && endRow == (this.row + direction) && target == null) {
             return true;
         }
 
         //move forward two squares 
-        
         if (!hasMoved && endCol == this.col && endRow == (this.row + (direction * 2))) {
             Piece target2 = getTarget(gameBoard.board, endCol, row + direction);
             return target == null && target2 == null;
         }
 
-         
         //En Passant
-        
-        
         if (gameBoard.enPassantCol == endCol && gameBoard.enPassantRow == endRow) {
             return Math.abs(endCol - col) == 1 && endRow == row + direction;
         }
 
-        
         // Capture diagonally
         if (Math.abs(endCol - this.col) == 1 && endRow == this.row + direction) {
             return target != null && target.isWhite != this.isWhite;
         }
-
-       
 
         return false;
 
