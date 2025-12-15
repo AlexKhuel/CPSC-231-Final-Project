@@ -5,6 +5,7 @@ class Board {
 
     int enPassantRow;
     int enPassantCol;
+    boolean enPassantIsWhite;
     boolean whiteTurn;
     boolean whiteShortCastle;
     boolean whiteLongCastle;
@@ -119,7 +120,9 @@ class Board {
                 blackLongCastle = false;
             }
 
-            uncheckedMove(startRow, startCol, endRow, endCol);
+            board[endRow][endCol] = new Rook(endRow, endCol, board[startRow][startCol].isWhite());
+            board[startRow][startCol] = null;
+
             return true;
         }
 
@@ -131,7 +134,8 @@ class Board {
             }
 
             if (currKing.canMove(this, endRow, endCol)) {
-                uncheckedMove(startRow, startCol, endRow, endCol);
+                board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
                 return true;
             }
 
@@ -148,16 +152,14 @@ class Board {
             }
         }
 
-        if (currPiece instanceof Pawn currPawn) {
-            if (currPawn.canMove(this, endRow, endCol)) {
-                board[endRow][endCol] = new Pawn(endRow, endCol, currPawn.isWhite, true);
-                board[startRow][startCol] = null;
-                return true;
-            }
-        }
         System.out.println("currPiece.canMove call");
         if (currPiece instanceof Pawn currPawn) {
             if (currPawn.canMove(this, endRow, endCol)) {
+                if (Math.abs(currPawn.getCol() - endCol) == 2) {
+                    enPassantIsWhite = currPawn.isWhite;
+                    enPassantCol = endCol;
+                    enPassantRow = currPawn.isWhite ? endRow + 1 : endRow - 1;
+                }
                 board[endRow][endCol] = new Pawn(endRow, endCol, currPawn.isWhite, true);
                 board[startRow][startCol] = null;
                 return true;
@@ -166,19 +168,33 @@ class Board {
 
         System.out.println("currPiece.canMove call");
         System.out.println("currPiece instanceOf Pawn" + (currPiece instanceof Pawn));
+
         if (currPiece.canMove(this, endRow, endCol)) {
-            uncheckedMove(startRow, startCol, endRow, endCol);
+            if (currPiece instanceof Pawn) {
+                board[endRow][endCol] = new Pawn(endRow, endCol, board[startRow][startCol].isWhite(), true);
+                board[startRow][startCol] = null;
+            } else if (currPiece instanceof Bishop) {
+                board[endRow][endCol] = new Bishop(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+            } else if (currPiece instanceof Knight) {
+                board[endRow][endCol] = new Knight(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+            } else if (currPiece instanceof Rook) {
+                board[endRow][endCol] = new Rook(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+            } else if (currPiece instanceof Queen) {
+                board[endRow][endCol] = new Queen(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+            } else {
+                board[endRow][endCol] = new King(endRow, endCol, board[startRow][startCol].isWhite());
+                board[startRow][startCol] = null;
+            }
             return true;
         }
 
         System.out.println("Catching anything that isn't right rn");
         //Catches anything 
         return false;
-    }
-
-    public void uncheckedMove(int startRow, int startCol, int endRow, int endCol) {
-        board[endRow][endCol] = board[startRow][startCol];
-        board[startRow][startCol] = null;
     }
 
     private boolean movePassant(int startRow, int startCol, int endRow, int endCol) {
