@@ -147,6 +147,7 @@ class Board {
             int dir = endCol - startCol;
 
             if (board[startRow][startCol + dir] instanceof Pawn && board[endRow][endCol] == null) {
+                System.out.println("Calling movePassant");
                 movePassant(startRow, startCol, endRow, endCol);
                 return true;
             }

@@ -40,7 +40,7 @@ class Pawn extends Piece {
         }
         King currKing = gameBoard.getKing(this.isWhite);
         Board fakeBoard = new Board(gameBoard);
-        fakeBoard.uncheckedMove(row, col, endRow, endCol); 
+        fakeBoard.uncheckedMove(this, row, col, endRow, endCol); 
         if (currKing.isInCheck(fakeBoard, currKing.getRow(), currKing.getCol())) {
             return false;
         }
@@ -54,26 +54,24 @@ class Pawn extends Piece {
         Piece target = getTarget(gameBoard.board, endCol, endRow);
 
         //move forward one square
-        System.out.println("endCol == this.col"+(endCol == this.col));
-        System.out.println("endRow == (this.row + direction)"+(endRow == (this.row + direction)));
-        System.out.println("target == null"+(target == null));
-        System.out.println("direction = "+direction);
+        System.out.println("Move forward one sqare ");
         if (endCol == this.col && endRow == (this.row + direction) && target == null) {
             return true;
         }
 
         //move forward two squares 
-        System.out.println("!hasMoved"+ !hasMoved);
+        System.out.println("Move two squares");
         if (!hasMoved && endCol == this.col && endRow == (this.row + (direction * 2))) {
             Piece target2 = getTarget(gameBoard.board, endCol, row + direction);
             return target == null && target2 == null;
         }
-
+        System.out.println("Capture diagonally");
         // Capture diagonally
         if (Math.abs(endCol - this.col) == 1 && endRow == this.row + direction) {
             return target != null && target.isWhite != this.isWhite;
         }
 
+        System.out.println("En Passant Logic");
         //En Passant
         if (gameBoard.enPassantCol == endCol && gameBoard.enPassantRow == endRow) {
             return Math.abs(endCol - col) == 1 && endRow == row + direction;
