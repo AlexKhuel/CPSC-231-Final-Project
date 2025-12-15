@@ -4,9 +4,7 @@ Chess Board
 By: Jake Puebla, Joshua Dowd, Nate Smith, Jerry Salas
 
 Date Completed: December 14, 2025
-*/
-
-
+ */
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,6 +12,7 @@ import javax.swing.JPanel;
 
 public class chessBoard extends JPanel {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private Board game;
     private int selectedRow = -1;
     private int selectedCol = -1;
